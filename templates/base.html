@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "includes/cafeteria/head.html" %}
+  </head>
+
+   
+  <body>
+    {% include "includes/cafeteria/toast_message.html" %}
+    {% include "includes/cafeteria/header.html" %}
+    <main>{% block content %} {% endblock content %}</main>
+    {% include "includes/cafeteria/footer.html" %}
+     {% include "includes/cafeteria/scripts.html" %}
+  </body>
+  
+{% comment %} Creating a go to up button {% endcomment %}
+<button id="goToTopButton" class="go-to-top" aria-label="Go to top" onclick="scrollToTop()">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+
+</html>
