@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    # Add other URL patterns as needed (e.g., for products, about, etc.)
-    # path('products/', views.products, name='products'),
-    # path('about/', views.about, name='about'),
+    path('login/', views.login, name='login'),
+    path('register/', views.register, name='register'),
+    path('about/', views.about, name='about'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

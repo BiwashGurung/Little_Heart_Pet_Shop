@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+  body {
+    background-color: #f8fdf7;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .register-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 15px;
+  }
+
+  .register-box {
+    background: #fff;
+    padding: 60px;
+    border-radius: 10px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.08);
+    max-width: 1100px;
+    width: 100%;
+    min-height: 650px;
+  }
+
+  .register-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .form-control {
+    border-radius: 0;
+    height: 48px;
+  }
+
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .btn-outline-dark {
+    border-radius: 0;
+    padding: 10px 35px;
+    border: 1px solid #ff4d00;
+    color: #ff4d00;
+    font-weight: 500;
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #ff4d00;
+    color: #fff;
+  }
+
+  .login-link {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .login-link a {
+    color: #ff4d00;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .register-box {
+      padding: 25px;
+      min-height: auto;
+    }
+  }
+</style>
+
+<div class="page-wrapper">
+  <div class="container register-container">
+    <div class="row register-box">
+      <div class="col-md-6 text-center mb-4 mb-md-0">
+        <img src="{% static 'Images/login_img.png' %}" alt="Register" class="register-image">
+      </div>
+      <div class="col-md-6 d-flex flex-column justify-content-center">
+        <h4 class="fw-bold">CREATE ACCOUNT</h4>
+        <h6 class="text-uppercase mb-4">Little Heart Pet Shop</h6>
+        <form method="POST">
+          {% csrf_token %}
+           <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="johnny123" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="john@example.com" required>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" name="phone" id="phone" placeholder="98XXXXXXXX" required>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Home Address</label>
+            <input type="text" class="form-control" name="address" id="address" placeholder="Kathmandu, Nepal" required>
+          </div>
+        
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="********" required>
+          </div>
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" name="confirm_password" id="confirmPassword" placeholder="********" required>
+          </div>
+          <button type="submit" class="btn btn-outline-dark w-100">Register</button>
+        </form>
+
+        <div class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Login here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
