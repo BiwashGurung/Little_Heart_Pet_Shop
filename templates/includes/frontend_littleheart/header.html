@@ -118,16 +118,16 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="">Blog</a>
+                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Contact Us</a>
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
                 </li>
             </ul>
             <!-- Right Icons -->
             <div class="navbar-icons">
                 <a href=""><i class="bi bi-search"></i></a>
-                <a href=""><i class="bi bi-person"></i></a>
+                <a href="{% url 'login' %}"><i class="bi bi-person"></i></a>
                 <a href=""><i class="bi bi-cart"></i></a>
             </div>
         </div>

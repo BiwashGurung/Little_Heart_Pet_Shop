@@ -10,3 +10,7 @@ def register(request):
     return render(request, 'frontend_littleheart/register.html')
 def about(request):
     return render(request, 'frontend_littleheart/about.html')
+def blog(request):
+    return render(request, 'frontend_littleheart/blog.html')
+def contact(request):
+    return render(request, 'frontend_littleheart/contact.html')
