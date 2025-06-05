@@ -1,0 +1,78 @@
+{% extends "base.html" %} 
+{% block content %} 
+<style>
+        body {
+            background-color: #E6F0E3; /* Light green background */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .text-orange {
+            color: #FF5733; /* Orange headings */
+        }
+        .btn-orange {
+            background-color: #FF5733;
+            color: white;
+            border: none;
+        }
+        .btn-orange:hover {
+            background-color: #E64A19; /* Slightly darker orange on hover */
+            color: white;
+        }
+        .form-control {
+            border-radius: 0;
+            border-color: #D3E0D1;
+        }
+        .form-control:focus {
+            border-color: #FF5733;
+            box-shadow: 0 0 0 0.2rem rgba(255, 87, 51, 0.25);
+        }
+        a {
+            color: #FF5733;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 576px) {
+            .login-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h3 class="text-center text-orange mb-4">Login</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            <div class="mb-3 text-end">
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-orange w-100">Login</button>
+        </form>
+        <p class="text-center mt-3 small">
+            Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+        </p>
+    </div>
+
+{% endblock content%}
