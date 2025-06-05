@@ -22,3 +22,6 @@ def regular_bathing(request):
 
 def dog(request):
     return render(request, 'frontend_littleheart/dog.html')
+
+def cat(request):
+    return render(request, 'frontend_littleheart/cat.html')
