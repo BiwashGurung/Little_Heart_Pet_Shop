@@ -1,6 +1,145 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
+{% block content %} 
 {% load static %}
 
-{% block content %}
+
+<!-- Hero Section -->
+<div class="text-center">
+  <img src="{% static 'images/groom-1.png' %}" alt="Grooming Hero" class="img-fluid w-100">
+</div>
+
+<!-- Services Overview -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="fw-bold text-danger mb-4">Comprehensive Grooming Services<br>Available for All Breeds of Dogs and Cats</h2>
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <h6 class="text-danger fw-bold">Puppy &<br>Kitten Bath</h6>
+        <p class="small">A gentle grooming session specially designed for young pets, includes a double bath, conditioning treatment, soft towel and dryer blow dry, light combing and brushing, ear and eye cleaning, and nail clipping.</p>
+        <h6 class="text-danger fw-bold mt-3">Bath Options –<br>Regular, Oil Massage & Medicated</h6>
+        <p class="small">Comprehensive grooming for your pet’s comfort and hygiene. Includes a double bath, conditioning, blow dry with towel and dryer, combing and brushing, hygiene cleaning, hair trimming and tidy-up, nail clipping or grinding, paw pad trimming and shaving, ear and eye cleaning, and a refreshing cologne spray.</p>
+      </div>
+      <div class="col-md-4">
+        <img src="{% static 'images/groom-2.png' %}" alt="Dog and Cat" class="img-fluid rounded">
+      </div>
+      <div class="col-md-4">
+        <h6 class="text-danger fw-bold">Regular bath</h6>
+        <p class="small">Perfect for maintaining your pet’s coat and cleanliness. Features a double bath, conditioning, towel and dryer blow dry, thorough combing and brushing, hygiene cleaning, hair trimming and tidy-up, nail clipping or grinding, paw pad care, ear and eye cleaning, and cologne spray.</p>
+        <h6 class="text-danger fw-bold mt-3">Medicated bath</h6>
+        <p class="small">Ideal for pets with sensitive skin or medical needs. Provides a double bath using medicated shampoo, drying with towel and hot/cold air dryer, followed by brushing, hair trimming, nail clipping, paw pad trimming and shaving, and ear and eye cleaning.</p>
+      </div>
+    </div>
+    <a href="#" class="btn btn-outline-danger mt-4">Book Now</a>
+  </div>
+</section>
+
+<!-- Banner -->
+<section class="text-white text-center d-flex align-items-center" style="background: url('{% static 'images/groom-3.png' %}') no-repeat center center/cover; min-height: 60vh;">
+  <div class="container py-5">
+    <h2 class="fw-bold display-5">Premium Grooming Services<br>for Your Furry Companions</h2>
+  </div>
+</section>
+
+
+<!-- Price Cards with Slider -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="text-danger fw-bold mb-4">Professional Grooming for Dogs and Cats</h2>
+    <p class="text-muted mb-5">
+      We provide expert grooming services to keep your dogs and cats looking great and feeling their best. From baths and hair trims to nail care and coat maintenance, our professional team ensures every pet receives top-quality attention. Prioritizing comfort and gentle care, we make grooming a calm and enjoyable experience, leaving your furry friends clean, relaxed, and happy.
+    </p>
+
+    <div id="groomingCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="col-md-6 col-lg-4 mx-auto">
+            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #ff9966, #ff5e62);">
+              <div class="card-body">
+                <div class="mb-2">
+                  <i class="bi bi-scissors fs-2"></i>
+                </div>
+                <h5 class="fw-bold">Regular Bath</h5>
+                <p class="small">Best For All Kinds Of Pets</p>
+                <h3 class="fw-bold">RS.1800</h3>
+                <ul class="list-unstyled text-start small">
+                  <li>✔ Double Bath</li>
+                  <li>✔ Conditioning the hair</li>
+                  <li>✔ Dry with Towel & Dryer</li>
+                  <li>✔ Ear & Eye Cleaning</li>
+                  <li>✔ Brushing</li>
+                  <li>✔ Dog Perfume Spray</li>
+                </ul>
+                <a href="#" class="btn btn-outline-light">Book Appointment</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="col-md-6 col-lg-4 mx-auto">
+            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #fbcf9c, #e59c3e);">
+              <div class="card-body">
+                <div class="mb-2">
+                  <i class="bi bi-flower1 fs-2"></i>
+                </div>
+                <h5 class="fw-bold">Oatmeal Treatment</h5>
+                <p class="small">Best For All Kinds Of Pets</p>
+                <h3 class="fw-bold">RS.2500</h3>
+                <ul class="list-unstyled text-start small">
+                  <li>✔ Oatmeal treatment</li>
+                  <li>✔ Double Bath</li>
+                  <li>✔ Conditioning the hair</li>
+                  <li>✔ Dry with Towel & Dryer</li>
+                  <li>✔ Brushing</li>
+                  <li>✔ Hair Trimming</li>
+                </ul>
+                <a href="#" class="btn btn-outline-light">Book Appointment</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+          <div class="col-md-6 col-lg-4 mx-auto">
+            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #ff9a9e, #fad0c4);">
+              <div class="card-body">
+                <div class="mb-2">
+                  <i class="bi bi-shield-plus fs-2"></i>
+                </div>
+                <h5 class="fw-bold">Fleas & Tick Treatment</h5>
+                <p class="small">Best For All Kinds Of Pets</p>
+                <h3 class="fw-bold">RS.2000</h3>
+                <ul class="list-unstyled text-start small">
+                  <li>✔ Double Bath using Anti-Tick Shampoo</li>
+                  <li>✔ Conditioning</li>
+                  <li>✔ Blow Dry with Towel & Dryer</li>
+                  <li>✔ Combing & Brushing</li>
+                  <li>✔ Hair Trimming and Tiding up</li>
+                  <li>✔ Nail Clipping</li>
+                </ul>
+                <a href="#" class="btn btn-outline-light">Book Appointment</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+  <!-- Controls -->
+<button class="carousel-control-prev" type="button" data-bs-target="#groomingCarousel" data-bs-slide="prev">
+  <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+</button>
+<button class="carousel-control-next" type="button" data-bs-target="#groomingCarousel" data-bs-slide="next">
+  <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+</button>
+
+    </div>
+  </div>
+</section>
 
 {% endblock content %}
