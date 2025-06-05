@@ -3,7 +3,6 @@ from django.shortcuts import render
 
 def home(request):
     return render(request, 'frontend_littleheart/index.html')
-
 def login(request):
     return render(request, 'frontend_littleheart/login.html')
 def register(request):
@@ -14,3 +13,6 @@ def blog(request):
     return render(request, 'frontend_littleheart/blog.html')
 def contact(request):
     return render(request, 'frontend_littleheart/contact.html')
+
+def grooming(request):
+    return render(request, 'frontend_littleheart/grooming.html')
