@@ -19,3 +19,6 @@ def grooming(request):
 
 def regular_bathing(request):
     return render(request, 'frontend_littleheart/regular_bath.html')
+
+def dog(request):
+    return render(request, 'frontend_littleheart/dog.html')
