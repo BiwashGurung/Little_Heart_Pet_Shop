@@ -13,4 +13,5 @@ urlpatterns = [
     path('blog/', views.blog, name='blog'),
     path('contact/', views.contact, name='contact'),
     path('grooming/', views.grooming, name='grooming'),
+    path('regular_bathing/', views.regular_bathing, name='regular_bathing'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

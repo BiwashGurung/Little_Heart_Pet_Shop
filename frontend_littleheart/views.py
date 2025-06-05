@@ -16,3 +16,6 @@ def contact(request):
 
 def grooming(request):
     return render(request, 'frontend_littleheart/grooming.html')
+
+def regular_bathing(request):
+    return render(request, 'frontend_littleheart/regular_bath.html')
