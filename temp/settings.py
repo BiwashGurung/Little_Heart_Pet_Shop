@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'LittleHeart',  # Your app
+    'frontend_littleheart',  # Your frontend app
 ]
+
+ 
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
