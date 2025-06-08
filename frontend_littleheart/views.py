@@ -102,7 +102,9 @@ def blog_list(request):
 
 def blog_detail(request, slug):
     blog = get_object_or_404(Blog, slug=slug)
-    return render(request, 'frontend_littleheart/blog_detail.html', {'blog': blog})
+    # Get other blogs, excluding the current one, limited to 4
+    other_blogs = Blog.objects.exclude(id=blog.id).order_by('-created_at')[:4]
+    return render(request, 'frontend_littleheart/blog_detail.html', {'blog': blog, 'other_blogs': other_blogs})
 
 
 
