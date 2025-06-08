@@ -7,6 +7,9 @@ from .forms import RegistrationForm
 from django.contrib.auth import login as auth_login
 import logging
 from django.contrib.auth import login as django_login
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import ContactForm
 
 
 def home(request):
@@ -82,7 +85,29 @@ def about(request):
 def blog(request):
     return render(request, 'frontend_littleheart/blog.html')
 def contact(request):
-    return render(request, 'frontend_littleheart/contact.html')
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save()
+            # Send email
+            try:
+                send_mail(
+                    subject=f"New Contact Form Submission: {contact.subject}",
+                    message=f"Name: {contact.name}\nEmail: {contact.email}\nPhone: {contact.phone or 'Not provided'}\nMessage: {contact.message}",
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[settings.DEFAULT_FROM_EMAIL],  # Send to admin email
+                    fail_silently=False,
+                )
+                messages.success(request, "Thank you! Your message has been sent successfully.")
+            except Exception as e:
+                logger.error(f"Email sending failed for contact {contact.id}: {str(e)}")
+                messages.error(request, "Message saved, but email sending failed. Please contact support.")
+            return redirect('contact')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = ContactForm()
+    return render(request, 'frontend_littleheart/contact.html', {'form': form})
 
 def grooming(request):
     return render(request, 'frontend_littleheart/grooming.html')

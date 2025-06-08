@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Contact
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id_display', 'username_display', 'email_display', 'phone', 'address')
@@ -23,5 +23,16 @@ class UserProfileAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.select_related('user')  # Optimize query with select_related
+
+
+
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'subject', 'created_at')
+    search_fields = ('name', 'email', 'subject')
+    list_filter = ('created_at',)
+    readonly_fields = ('created_at',)
 
 admin.site.register(UserProfile, UserProfileAdmin)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from .models import UserProfile
+from .models import UserProfile , Contact
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=150, required=True, label="Username")
@@ -40,3 +40,24 @@ class RegistrationForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email is already registered.")
         return email
+    
+
+
+
+
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'phone', 'subject', 'message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 4, 'class': 'form-control border-danger'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control border-danger', 'placeholder': 'Phone number'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field_name not in ['message', 'phone']:  # Already styled
+                field.widget.attrs.update({'class': 'form-control border-danger'})
