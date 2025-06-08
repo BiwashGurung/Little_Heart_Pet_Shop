@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import UserProfile, Contact
+from .models import UserProfile, Contact, Blog
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id_display', 'username_display', 'email_display', 'phone', 'address')
@@ -36,3 +36,20 @@ class ContactAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
 
 admin.site.register(UserProfile, UserProfileAdmin)
+
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author', 'created_at')
+    search_fields = ('title', 'content', 'author__username')
+    list_filter = ('created_at',)
+    readonly_fields = ('created_at',)
+    prepopulated_fields = {'slug': ('title',)}
+    # Restrict to staff/admins (optional)
+    def has_add_permission(self, request):
+        return request.user.is_staff
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_staff
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_staff

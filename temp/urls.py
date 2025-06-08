@@ -10,7 +10,8 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('about/', views.about, name='about'),
-    path('blog/', views.blog, name='blog'),
+    path('blog/', views.blog_list, name='blog_list'),
+    path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('contact/', views.contact, name='contact'),
     path('grooming/', views.grooming, name='grooming'),
     path('regular_bathing/', views.regular_bathing, name='regular_bathing'),
@@ -19,4 +20,4 @@ urlpatterns = [
 
 
 
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -10,6 +10,9 @@ from django.contrib.auth import login as django_login
 from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactForm
+from .models import Blog, Contact
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 def home(request):
@@ -82,8 +85,27 @@ def register(request):
 
 def about(request):
     return render(request, 'frontend_littleheart/about.html')
-def blog(request):
-    return render(request, 'frontend_littleheart/blog.html')
+
+
+
+def blog_list(request):
+    blogs = Blog.objects.all()
+    paginator = Paginator(blogs, 4)  # Show 4 blogs per page to match your layout
+    page = request.GET.get('page')
+    try:
+        blogs_page = paginator.page(page)
+    except PageNotAnInteger:
+        blogs_page = paginator.page(1)
+    except EmptyPage:
+        blogs_page = paginator.page(paginator.num_pages)
+    return render(request, 'frontend_littleheart/blog.html', {'blogs': blogs_page})
+
+def blog_detail(request, slug):
+    blog = get_object_or_404(Blog, slug=slug)
+    return render(request, 'frontend_littleheart/blog_detail.html', {'blog': blog})
+
+
+
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
