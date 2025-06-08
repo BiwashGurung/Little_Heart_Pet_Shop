@@ -2,20 +2,39 @@
 {% load static %}
 
 {% block content %}
+<style>
+  .blog-detail-image {
+    width: 100%; /* Full width of the screen */
+    max-width: 100%; /* Prevent overflow */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Ensure centering works */
+    margin-left: auto; /* Center the image */
+    margin-right: auto; /* Center the image */
+    object-fit: cover; /* Maintain aspect ratio and crop if necessary */
+  }
+  .text-center {
+    text-align: center;
+  }
+  .blog-date {
+    font-size: 0.9rem;
+    color: gray;
+  }
+</style>
 <div class="container my-5">
-  <h2 class="text-center text-danger fw-bold mb-5">Blog Detail</h2>
+  <h2 class="text-center text-danger fw-bold mb-5">{{ blog.title }}</h2>
 
   <div class="row">
     <div class="col-md-12">
       {% if blog.image %}
-        <img src="{{ blog.image.url }}" class="img-fluid mb-3" alt="{{ blog.title }}">
+        <img src="{{ blog.image.url }}" class="blog-detail-image mb-3" alt="{{ blog.title }}">
       {% else %}
-        <img src="{% static 'images/default-blog.png' %}" class="img-fluid mb-3" alt="{{ blog.title }}">
+        <img src="{% static 'images/default-blog.png' %}" class="blog-detail-image mb-3" alt="{{ blog.title }}">
       {% endif %}
       <h5 class="fw-bold">{{ blog.title }}</h5>
       <p class="blog-date">{{ blog.created_at|date:"F d, Y" }}</p>
-      <p>By {{ blog.author.username }}</p>
       <div>{{ blog.content|safe }}</div>
+      <br>
+      <p><strong><i>Author:</strong> {{ blog.author.username }}</i></p>
     </div>
   </div>
 </div>
