@@ -1,0 +1,5 @@
+ERROR 2025-06-08 10:33:22,748 views Registration error for user testuser3: login() takes 1 positional argument but 2 were given
+ERROR 2025-06-08 10:35:00,785 views Registration error for user testuser: login() takes 1 positional argument but 2 were given
+ERROR 2025-06-08 10:38:06,090 views Registration error for user testuser: login() takes 1 positional argument but 2 were given
+ERROR 2025-06-08 10:41:46,244 views Registration error for user informatics: login() takes 1 positional argument but 2 were given
+ERROR 2025-06-08 10:49:40,781 views Registration error for user informatic: (1062, "Duplicate entry '+9779817189947' for key 'phone'")

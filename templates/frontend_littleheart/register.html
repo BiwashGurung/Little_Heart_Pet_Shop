@@ -123,12 +123,12 @@
             {% endfor %}
           </div>
           <div class="mb-3">
-            <label for="id_phone" class="form-label">Phone Number</label>
-            <input type="text" class="form-control {% if form.phone.errors %}is-invalid{% endif %}" name="phone" id="id_phone" value="{{ form.phone.value|default:'' }}" placeholder="98XXXXXXXX" required>
-            {% for error in form.phone.errors %}
-              <div class="errorlist">{{ error }}</div>
-            {% endfor %}
-          </div>
+    <label for="id_phone" class="form-label">Phone Number</label>
+    <input type="text" class="form-control {% if form.phone.errors %}is-invalid{% endif %}" name="phone" id="id_phone" value="{{ form.phone.value|default:'' }}" placeholder="+9779817158500" required>
+    {% for error in form.phone.errors %}
+        <div class="errorlist">{{ error }}</div>
+    {% endfor %}
+</div>
           <div class="mb-3">
             <label for="id_address" class="form-label">Home Address</label>
             <input type="text" class="form-control {% if form.address.errors %}is-invalid{% endif %}" name="address" id="id_address" value="{{ form.address.value|default:'' }}" placeholder="Kathmandu, Nepal" required>

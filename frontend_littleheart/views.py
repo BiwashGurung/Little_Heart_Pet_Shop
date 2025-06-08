@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from .forms import RegistrationForm
 from django.contrib.auth import login as auth_login
+import logging
+from django.contrib.auth import login as django_login
 
 
 def home(request):
@@ -13,7 +15,7 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        remember_me = request.POST.get('rememberMe')  # Checkbox value (on or None)
+        remember_me = request.POST.get('rememberMe')  
 
         # Authenticate user
         user = authenticate(request, username=username, password=password)
@@ -31,6 +33,7 @@ def login(request):
 
     return render(request, 'frontend_littleheart/login.html')
 
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'POST':
@@ -42,26 +45,31 @@ def register(request):
             address = form.cleaned_data['address']
             password = form.cleaned_data['password']
 
+            if not phone.startswith('+977'):
+                messages.error(request, "Phone number must start with +977 for Nepal.")
+                return render(request, 'frontend_littleheart/register.html', {'form': form})
+
             # Create new user
             user = User.objects.create_user(username=username, email=email, password=password)
             try:
                 # Create user profile
                 profile = UserProfile.objects.create(user=user, phone=phone, address=address)
-                # Authenticate and log in the user
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
+                # Authenticate the user
+                authenticated_user = authenticate(request, username=username, password=password)
+                if authenticated_user is not None:
+                    django_login(request, authenticated_user)  
                     messages.success(request, "Registration successful! You are now logged in.")
-                    return redirect('login')  # Redirect to login page
+                    return redirect('login')
                 else:
-                    messages.error(request, "Something went wrong during login.")
+                    messages.error(request, "Authentication failed after registration.")
             except Exception as e:
-                # Delete the user if profile creation fails to maintain data consistency
+                # Delete the user if profile creation fails
                 user.delete()
+                logger.error(f"Registration error for user {username}: {str(e)}")
                 if "Duplicate entry" in str(e):
                     messages.error(request, "The phone number is already registered. Please use a different number.")
                 else:
-                    messages.error(request, "An error occurred during registration. Please try again.")
+                    messages.error(request, f"An error occurred during registration: {str(e)}. Check server logs for details.")
         else:
             messages.error(request, "Please correct the errors below.")
     else:

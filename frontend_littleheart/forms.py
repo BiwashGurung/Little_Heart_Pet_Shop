@@ -1,11 +1,20 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 from .models import UserProfile
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=150, required=True, label="Username")
     email = forms.EmailField(required=True, label="Email Address")
-    phone = forms.CharField(max_length=15, required=True, label="Phone Number")
+    phone = forms.CharField(
+        max_length=15,
+        required=True,
+        label="Phone Number",
+        validators=[RegexValidator(
+            r'^\+977\d{9,10}$',
+            'Enter a valid Nepal phone number starting with +977 followed by 9-10 digits (e.g., +9779817158500).'
+        )]
+    )
     address = forms.CharField(widget=forms.Textarea, required=True, label="Home Address")
     password = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
     confirm_password = forms.CharField(widget=forms.PasswordInput, required=True, label="Confirm Password")
