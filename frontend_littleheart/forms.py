@@ -18,6 +18,7 @@ class RegistrationForm(forms.Form):
     address = forms.CharField(widget=forms.Textarea, required=True, label="Home Address")
     password = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
     confirm_password = forms.CharField(widget=forms.PasswordInput, required=True, label="Confirm Password")
+    otp = forms.CharField(max_length=6, required=False, label="OTP", help_text="Enter the OTP sent to your email")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -40,7 +41,6 @@ class RegistrationForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email is already registered.")
         return email
-    
 
 
 

@@ -12,6 +12,9 @@ from django.conf import settings
 from .forms import ContactForm
 from .models import Blog, Contact
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .models import OTP
+import random
+from django.utils import timezone
 
 
 
@@ -40,7 +43,6 @@ def login(request):
     return render(request, 'frontend_littleheart/login.html')
 
 logger = logging.getLogger(__name__)
-
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -51,31 +53,55 @@ def register(request):
             address = form.cleaned_data['address']
             password = form.cleaned_data['password']
 
-            if not phone.startswith('+977'):
-                messages.error(request, "Phone number must start with +977 for Nepal.")
-                return render(request, 'frontend_littleheart/register.html', {'form': form})
-
-            # Create new user
-            user = User.objects.create_user(username=username, email=email, password=password)
-            try:
-                # Create user profile
-                profile = UserProfile.objects.create(user=user, phone=phone, address=address)
-                # Authenticate the user
-                authenticated_user = authenticate(request, username=username, password=password)
-                if authenticated_user is not None:
-                    django_login(request, authenticated_user)  
-                    messages.success(request, "Registration successful! You are now logged in.")
-                    return redirect('login')
-                else:
-                    messages.error(request, "Authentication failed after registration.")
-            except Exception as e:
-                # Delete the user if profile creation fails
-                user.delete()
-                logger.error(f"Registration error for user {username}: {str(e)}")
-                if "Duplicate entry" in str(e):
-                    messages.error(request, "The phone number is already registered. Please use a different number.")
-                else:
-                    messages.error(request, f"An error occurred during registration: {str(e)}. Check server logs for details.")
+            # Check if OTP is being verified (from modal submission)
+            if 'otp' in request.POST and request.POST.get('action') == 'verify_otp':
+                otp_input = request.POST.get('otp')
+                try:
+                    # Get the most recent unverified OTP
+                    otp = OTP.objects.filter(email=email, is_verified=False).order_by('-created_at').first()
+                    if otp and otp.otp_code == otp_input and timezone.now() < otp.expires_at:
+                        otp.is_verified = True
+                        otp.save()
+                        # Create user and profile
+                        user = User.objects.create_user(username=username, email=email, password=password)
+                        profile = UserProfile.objects.create(user=user, phone=phone, address=address)
+                        authenticated_user = authenticate(request, username=username, password=password)
+                        if authenticated_user is not None:
+                            django_login(request, authenticated_user)
+                            messages.success(request, "Registration successful! You are now logged in.")
+                            otp.delete()  # Clean up OTP
+                            return redirect('login')
+                        else:
+                            messages.error(request, "Authentication failed after registration.")
+                    else:
+                        messages.error(request, "Invalid or expired OTP. Please try again.")
+                except OTP.DoesNotExist:
+                    messages.error(request, "No OTP found for this email. Please request a new one.")
+                return render(request, 'frontend_littleheart/register.html', {'form': form, 'show_modal': True})
+            else:
+                # Check for existing unverified OTPs and clean up
+                OTP.objects.filter(email=email, is_verified=False).exclude(expires_at__lt=timezone.now()).delete()
+                # Generate and send new OTP
+                otp_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+                otp = OTP.objects.create(
+                    email=email,
+                    otp_code=otp_code,
+                    expires_at=timezone.now() + timezone.timedelta(minutes=10)
+                )
+                try:
+                    send_mail(
+                        subject="Your OTP for Registration",
+                        message=f"Your OTP code is {otp_code}. It is valid for 10 minutes. Do not share it with anyone.",
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[email],
+                        fail_silently=False,
+                    )
+                    messages.success(request, f"OTP has been sent to {email}. Please verify it in the popup.")
+                except Exception as e:
+                    logger.error(f"OTP email sending failed for {email}: {str(e)}")
+                    messages.error(request, f"Failed to send OTP. Please try again later.")
+                    otp.delete()  # Clean up if email fails
+                return render(request, 'frontend_littleheart/register.html', {'form': form, 'show_modal': True})
         else:
             messages.error(request, "Please correct the errors below.")
     else:
