@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<!-- My Bookings Page -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h1 class="text-center fw-bold text-primary mb-5" style="font-family: 'Arial', sans-serif; letter-spacing: 1px;">
+      My Bookings
+    </h1>
+    {% if bookings %}
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for booking in bookings %}
+          <div class="col">
+            <div class="card h-100 shadow-sm border-0 rounded-4 p-4 bg-white">
+              <div class="card-body">
+                <h5 class="card-title fw-bold text-danger mb-3">Booking #{{ booking.id }}</h5>
+                <div class="row">
+                  <div class="col-12 col-lg-6">
+                    <p class="mb-2"><strong class="text-dark">Customer:</strong> <span class="text-muted">{{ booking.full_name }}</span></p>
+                    <p class="mb-2"><strong class="text-dark">Contact No:</strong> <span class="text-muted">{{ booking.contact_no }}</span></p>
+                    <p class="mb-2"><strong class="text-dark">Email:</strong> <span class="text-muted">{{ booking.email }}</span></p>
+                    <p class="mb-2"><strong class="text-dark">Total Price:</strong> <span class="text-success">Rs. {{ booking.total_price }}</span></p>
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <p class="mb-2"><strong class="text-dark">Status:</strong> 
+                      <span class="badge {% if booking.status == 'pending' %}bg-warning{% elif booking.status == 'approved' %}bg-success{% elif booking.status == 'canceled' %}bg-danger{% endif %} text-white">
+                        {{ booking.status|title }}
+                      </span>
+                    </p>
+                    <p class="mb-2"><strong class="text-dark">Date & Time:</strong> <span class="text-muted">{{ booking.date_time|date:'F d, Y h:i A' }}</span></p>
+                  </div>
+                </div>
+                <hr class="my-3">
+                <h6 class="fw-bold text-danger mb-2">Pet Details</h6>
+                {% if booking.pets %}
+                  {% for pet in booking.pets %}
+                    <div class="mb-2">
+                      <p><strong>Pet Name:</strong> {{ pet.name }}</p>
+                      <p><strong>Age:</strong> {{ pet.age }}</p>
+                      <p><strong>Weight:</strong> {{ pet.weight }} kg</p>
+                      <p><strong>Note:</strong> {{ pet.note|default:'None' }}</p>
+                    </div>
+                    {% if not forloop.last %}<hr class="my-2">{% endif %}
+                  {% endfor %}
+                {% else %}
+                  <p class="text-muted">No pets recorded.</p>
+                {% endif %}
+                <hr class="my-3">
+                <h6 class="fw-bold text-danger mb-2">Service Details</h6>
+                <p><strong>Service Type:</strong> {{ booking.service_type|title }}</p>
+                <p><strong>Add-ons:</strong> {% if booking.add_ons %}{{ booking.add_ons|join:", "|title }}{% else %}None{% endif %}</p>
+                {% if is_staff %}
+                  <hr class="my-3">
+                  <form method="post" action="{% url 'update_booking_status' %}" class="mt-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                    <div class="mb-3">
+                      <label for="status_{{ booking.id }}" class="form-label fw-bold text-dark">Update Status:</label>
+                      <select name="status" id="status_{{ booking.id }}" class="form-select" required>
+                        <option value="pending" {% if booking.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="approved" {% if booking.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="canceled" {% if booking.status == 'canceled' %}selected{% endif %}>Canceled</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm">Update Status</button>
+                  </form>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <p class="text-center text-muted py-5">No bookings found.</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="col-12">
+        <p class="text-center text-muted py-5">No bookings found.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}
+
+<style>
+  /* Custom CSS for Professional Look */
+  .card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .badge {
+    padding: 0.5em 1em;
+    font-size: 0.9em;
+    border-radius: 0.25rem;
+  }
+  .bg-warning { background-color: #ffc107 !important; }
+  .bg-success { background-color: #28a745 !important; }
+  .bg-danger { background-color: #dc3545 !important; }
+  @media (max-width: 768px) {
+    .row-cols-md-2 { row-cols-1 !important; }
+    .card-body { padding: 1.5rem; }
+    .col-lg-6 { flex: 0 0 100%; max-width: 100%; }
+  }
+  @media (max-width: 576px) {
+    h1 { font-size: 1.75rem; }
+    .card-title { font-size: 1.25rem; }
+    .form-select { font-size: 0.9rem; }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+  }
+</style>

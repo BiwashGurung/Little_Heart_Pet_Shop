@@ -67,4 +67,27 @@ class OTP(models.Model):
         db_table = 'little_heart_otps'
 
     def __str__(self):
-        return f"OTP for {self.email}"        
+        return f"OTP for {self.email}"   
+
+
+
+class Booking(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('canceled', 'Canceled'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100)
+    contact_no = models.CharField(max_length=15)
+    email = models.EmailField()
+    pets = models.JSONField(default=list)
+    service_type = models.CharField(max_length=50)
+    add_ons = models.JSONField(default=list)
+    date_time = models.DateTimeField()
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.date_time}"

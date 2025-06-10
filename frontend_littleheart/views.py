@@ -1,21 +1,23 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from django.contrib.auth.models import User
-from .models import UserProfile
-from .forms import RegistrationForm
-from django.contrib.auth import login as auth_login
-import logging
-from django.contrib.auth import login as django_login
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm
-from .models import Blog, Contact
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import OTP
-import random
+import json
+from datetime import timedelta
+from .models import Booking
 from django.utils import timezone
-
+import random
+import logging
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib import messages
+from .forms import RegistrationForm, ContactForm
+from .models import UserProfile, Contact, Blog, OTP
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import login as django_login
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 
 def home(request):
@@ -170,3 +172,134 @@ def dog(request):
 
 def cat(request):
     return render(request, 'frontend_littleheart/cat.html')
+
+
+
+
+@csrf_exempt
+@login_required
+def book_appointment(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            pets = data.get('pets', [])
+            service_type = data.get('service_type')
+            add_ons = data.get('add_ons', [])
+            date_time_str = data.get('date_time')  # Received as ISO string
+            total_price = calculate_total_price(service_type, add_ons)
+
+            # Convert string to datetime object
+            date_time = timezone.datetime.fromisoformat(date_time_str.replace('Z', '+00:00'))
+
+            # Check for existing booking at the same date and time
+            existing_booking = Booking.objects.filter(date_time=date_time).exists()
+            if existing_booking:
+                return JsonResponse({'success': False, 'message': 'This date and time is already booked.'})
+
+            # Validate date range (today to 1 month)
+            today = timezone.now().date()
+            max_date = today + timedelta(days=30)
+            if not (today <= date_time.date() <= max_date):
+                return JsonResponse({'success': False, 'message': 'Please select a date within the next 30 days.'})
+
+            booking = Booking(
+                user=request.user,
+                full_name=data.get('full_name'),
+                contact_no=data.get('contact_no'),
+                email=data.get('email'),
+                pets=pets,
+                service_type=service_type,
+                add_ons=add_ons,
+                date_time=date_time,
+                total_price=total_price
+            )
+            booking.save()
+
+            # Send confirmation email to user
+            send_booking_email(booking, request.user.email)
+
+            return JsonResponse({'success': True, 'message': 'Booking saved successfully'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
+
+@login_required
+def my_bookings(request):
+    bookings = Booking.objects.filter(user=request.user).order_by('-created_at')
+    if request.user.is_staff:
+        all_bookings = Booking.objects.all().order_by('-created_at')
+        return render(request, 'frontend_littleheart/my_bookings.html', {'bookings': all_bookings, 'is_staff': True})
+    return render(request, 'frontend_littleheart/my_bookings.html', {'bookings': bookings})
+
+@csrf_exempt
+@login_required
+def update_booking_status(request):
+    if request.method == 'POST' and request.user.is_staff:
+        booking_id = request.POST.get('booking_id')
+        status = request.POST.get('status')
+        try:
+            booking = Booking.objects.get(id=booking_id)
+            booking.status = status
+            booking.save()
+
+            # Send status update email to user
+            send_status_update_email(booking, booking.email)
+            return JsonResponse({'success': True, 'message': 'Status updated successfully'})
+        except Booking.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Booking not found'})
+    return JsonResponse({'success': False, 'message': 'Invalid request or insufficient permissions'})
+
+def calculate_total_price(service_type, add_ons):
+    base_prices = {'washDry': 1800, 'washTidy': 2000, 'fullGroom': 2500, 'puppy': 2000}
+    add_on_prices = {'deshedding': 500, 'specialShampoo': 300, 'nailClip': 200, 'analGland': 400, 'teethBrushing': 300}
+    total = base_prices.get(service_type, 0)
+    for add_on in add_ons:
+        total += add_on_prices.get(add_on, 0)
+    return total
+
+def send_booking_email(booking, recipient_email):
+    subject = 'Your Pet Grooming Booking Confirmation'
+    message = f"""
+    Dear {booking.full_name},
+
+    Your booking has been successfully created with the following details:
+    - Date & Time: {booking.date_time}
+    - Service Type: {booking.service_type}
+    - Total Price: Rs. {booking.total_price}
+    - Status: {booking.status}
+    - Pets: {booking.pets}
+
+    Thank you for choosing us!
+    Little Heart Pet Shop
+    """
+    send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [recipient_email],
+        fail_silently=False,
+    )
+
+def send_status_update_email(booking, recipient_email):
+    subject = 'Your Pet Grooming Booking Status Update'
+    message = f"""
+    Dear {booking.full_name},
+
+    The status of your booking has been updated to: {booking.status}
+
+    Booking Details:
+    - Date & Time: {booking.date_time}
+    - Service Type: {booking.service_type}
+    - Total Price: Rs. {booking.total_price}
+    - Pets: {booking.pets}
+
+    Thank you!
+    Little Heart Pet Shop
+    """
+    send_mail(
+        subject,
+        message,
+        settings.EMAIL_HOST_USER,
+        [recipient_email],
+        fail_silently=False,
+    )

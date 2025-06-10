@@ -1,5 +1,5 @@
-{% extends "base.html" %} 
-{% block content %} 
+{% extends "base.html" %}
+{% block content %}
 {% load static %}
 <!-- Regular Bath Page -->
 <section class="text-center text-white d-flex align-items-center" 
@@ -11,7 +11,6 @@
     </h1>
   </div>
 </section>
-
 
 <section class="py-5 bg-light">
   <div class="container">
@@ -70,7 +69,7 @@
       <!-- Right Section -->
       <div class="col-lg-4">
         <div class="card shadow-sm border-0 rounded-4 p-4">
-          <img src="{% static 'Images/REGULAR-3.png' %}"" alt="Service" class="rounded mb-4 w-100">
+          <img src="{% static 'Images/REGULAR-3.png' %}" alt="Service" class="rounded mb-4 w-100">
           <div class="text-muted small mb-3">
             <p><strong class="text-danger">💲 Price:</strong><br>Rs. 1800 / Rs. 2000 / Rs. 2500</p>
             <p><strong class="text-danger">🐾 Pets Size:</strong><br>Small / Medium / Large</p>
@@ -81,12 +80,270 @@
             <p><strong class="text-danger">💳 Payment Method:</strong><br>Cash or Online</p>
             <p><strong class="text-danger">📞 Contact No:</strong><br>+977 9800000000</p>
           </div>
-          <a href="#" class="btn btn-outline-danger w-100">Book Now →</a>
+          <a href="#" class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now →</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bookingModalLabel">Book Your Pet Grooming</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="bookingForm">
+          <div id="step1" class="step active">
+            <h4>Customer Details</h4>
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="fullName" name="full_name" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactNo" class="form-label">Contact No <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" id="contactNo" name="contact_no" required>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="nextStep1">Next</button>
+          </div>
 
-{% endblock content%}
+          <div id="step2" class="step">
+            <h4>Pet Info</h4>
+            <div id="petContainer">
+              <div class="pet-info mb-3">
+                <label for="petName1" class="form-label">Pet Name</label>
+                <input type="text" class="form-control" id="petName1" name="petName1" required>
+                <label for="petAge1" class="form-label">Age</label>
+                <input type="number" class="form-control" id="petAge1" name="petAge1">
+                <label for="petWeight1" class="form-label">Weight <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="petWeight1" name="petWeight1" step="0.1" required>
+                <label for="petNote1" class="form-label">Note (Medical Condition, Behavior)</label>
+                <textarea class="form-control" id="petNote1" name="petNote1"></textarea>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary" id="addPet">Add Another Pet</button>
+            <button type="button" class="btn btn-primary" id="nextStep2">Next</button>
+            <button type="button" class="btn btn-secondary" id="prevStep2">Previous</button>
+          </div>
+
+          <div id="step3" class="step">
+            <h4>Grooming Booking</h4>
+            <div class="mb-3">
+              <label class="form-label">Service Type</label>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="service_type" id="washDry" value="washDry" required>
+                <label class="form-check-label" for="washDry">Wash and Dry (Rs. 1800)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="service_type" id="washTidy" value="washTidy">
+                <label class="form-check-label" for="washTidy">Wash and Tidy (Rs. 2000)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="service_type" id="fullGroom" value="fullGroom">
+                <label class="form-check-label" for="fullGroom">Full Groom (Rs. 2500)</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="service_type" id="puppy" value="puppy">
+                <label class="form-check-label" for="puppy">Puppy (Rs. 2000)</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Add-ons</label>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="add_ons" id="deshedding" value="deshedding">
+                <label class="form-check-label" for="deshedding">Deshedding (Rs. 500) - Wash and Tidy/Dry</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="add_ons" id="specialShampoo" value="specialShampoo">
+                <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs. 300) - All</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="add_ons" id="nailClip" value="nailClip">
+                <label class="form-check-label" for="nailClip">Nail Clip (Rs. 200) - Wash and Dry</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="add_ons" id="analGland" value="analGland">
+                <label class="form-check-label" for="analGland">Anal Gland (Rs. 400) - All</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="add_ons" id="teethBrushing" value="teethBrushing">
+                <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs. 300) - All</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="dateTime" class="form-label">Date and Time (9 AM - 5 PM)</label>
+              <input type="datetime-local" class="form-control" id="dateTime" name="date_time" required>
+            </div>
+            <p><strong>Total Price: </strong><span id="totalPrice">Rs. 0.00</span></p>
+            <button type="button" class="btn btn-primary" id="confirmBooking">Confirm Booking</button>
+            <button type="button" class="btn btn-secondary" id="prevStep3">Previous</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<!-- JavaScript for Booking Form -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
+    let petCount = 1;
+
+    // Show modal and set date range
+    document.querySelector('.btn-outline-danger').addEventListener('click', function() {
+      modal.show();
+      document.getElementById('step1').classList.add('active');
+      const today = new Date().toISOString().slice(0, 16);
+      const oneMonthLater = new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 16);
+      document.getElementById('dateTime').setAttribute('min', today);
+      document.getElementById('dateTime').setAttribute('max', oneMonthLater);
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.querySelector('.step.active').style.display = 'block';
+    });
+
+    // Step Navigation
+    document.getElementById('nextStep1').addEventListener('click', function() {
+      if (document.getElementById('contactNo').value && document.getElementById('email').value) {
+        document.getElementById('step1').classList.remove('active');
+        document.getElementById('step2').classList.add('active');
+        document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+        document.querySelector('.step.active').style.display = 'block';
+      } else {
+        alert('Full Name, Contact No, and Email are required!');
+      }
+    });
+
+    document.getElementById('nextStep2').addEventListener('click', function() {
+      let valid = true;
+      for (let i = 1; i <= petCount; i++) {
+        if (!document.getElementById(`petWeight${i}`).value) {
+          valid = false;
+          break;
+        }
+      }
+      if (valid) {
+        document.getElementById('step2').classList.remove('active');
+        document.getElementById('step3').classList.add('active');
+        document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+        document.querySelector('.step.active').style.display = 'block';
+        updateTotalPrice();
+      } else {
+        alert('Weight is required for all pets!');
+      }
+    });
+
+    document.getElementById('prevStep2').addEventListener('click', function() {
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step1').classList.add('active');
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.querySelector('.step.active').style.display = 'block';
+    });
+
+    document.getElementById('prevStep3').addEventListener('click', function() {
+      document.getElementById('step3').classList.remove('active');
+      document.getElementById('step2').classList.add('active');
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.querySelector('.step.active').style.display = 'block';
+    });
+
+    // Add Another Pet
+    document.getElementById('addPet').addEventListener('click', function() {
+      petCount++;
+      const petDiv = document.createElement('div');
+      petDiv.className = 'pet-info mb-3';
+      petDiv.innerHTML = `
+        <label for="petName${petCount}" class="form-label">Pet Name</label>
+        <input type="text" class="form-control" id="petName${petCount}" name="petName${petCount}" required>
+        <label for="petAge${petCount}" class="form-label">Age</label>
+        <input type="number" class="form-control" id="petAge${petCount}" name="petAge${petCount}">
+        <label for="petWeight${petCount}" class="form-label">Weight <span class="text-danger">*</span></label>
+        <input type="number" class="form-control" id="petWeight${petCount}" name="petWeight${petCount}" step="0.1" required>
+        <label for="petNote${petCount}" class="form-label">Note (Medical Condition, Behavior)</label>
+        <textarea class="form-control" id="petNote${petCount}" name="petNote${petCount}"></textarea>
+      `;
+      document.getElementById('petContainer').appendChild(petDiv);
+    });
+
+    // Calculate Total Price
+    function updateTotalPrice() {
+      const serviceType = document.querySelector('input[name="service_type"]:checked')?.value || 'washDry';
+      const addOns = Array.from(document.querySelectorAll('input[name="add_ons"]:checked')).map(cb => cb.value);
+      const basePrices = { washDry: 1800, washTidy: 2000, fullGroom: 2500, puppy: 2000 };
+      const addOnPrices = { deshedding: 500, specialShampoo: 300, nailClip: 200, analGland: 400, teethBrushing: 300 };
+      let total = basePrices[serviceType] || 0;
+      addOns.forEach(add_on => total += addOnPrices[add_on] || 0);
+      document.getElementById('totalPrice').textContent = `Rs. ${total.toFixed(2)}`;
+    }
+
+    document.querySelectorAll('input[name="service_type"], input[name="add_ons"]').forEach(input => {
+      input.addEventListener('change', updateTotalPrice);
+    });
+
+    // Confirm Booking
+    document.getElementById('confirmBooking').addEventListener('click', function() {
+      const formData = new FormData(document.getElementById('bookingForm'));
+      const data = {};
+      for (let [key, value] of formData.entries()) {
+        data[key] = value;
+      }
+      data.pets = [];
+      for (let i = 1; i <= petCount; i++) {
+        data.pets.push({
+          name: data[`petName${i}`] || '',
+          age: data[`petAge${i}`] || '',
+          weight: data[`petWeight${i}`] || '',
+          note: data[`petNote${i}`] || ''
+        });
+        delete data[`petName${i}`];
+        delete data[`petAge${i}`];
+        delete data[`petWeight${i}`];
+        delete data[`petNote${i}`];
+      }
+      data.add_ons = Array.from(formData.getAll('add_ons'));
+      data.date_time = new Date(document.getElementById('dateTime').value).toISOString();
+
+      fetch('/book-appointment/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          alert('Booking confirmed! Redirecting to My Bookings...');
+          window.location.href = '/my_bookings/';
+        } else {
+          alert('Error: ' + result.message);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  });
+
+  // Step styling
+  document.querySelectorAll('.step').forEach(step => {
+    step.style.display = 'none';
+  });
+  document.querySelector('.step.active').style.display = 'block';
+</script>
+
+<style>
+  .step { display: none; }
+  .step.active { display: block; }
+</style>
+{% endblock content %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import UserProfile, Contact, Blog
+from .models import UserProfile, Contact, Blog, Booking
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user_id_display', 'username_display', 'email_display', 'phone', 'address')
@@ -53,3 +53,10 @@ class BlogAdmin(admin.ModelAdmin):
         return request.user.is_staff
     def has_delete_permission(self, request, obj=None):
         return request.user.is_staff
+    
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'contact_no', 'date_time', 'status', 'total_price')
+    list_filter = ('status', 'date_time')
+    search_fields = ('full_name', 'contact_no', 'email')

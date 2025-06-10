@@ -17,6 +17,9 @@ urlpatterns = [
     path('regular_bathing/', views.regular_bathing, name='regular_bathing'),
     path('dog/', views.dog, name='dog'),
     path('cat/', views.cat, name='cat'),
+    path('book-appointment/', views.book_appointment, name='book_appointment'),
+    path('my_bookings/', views.my_bookings, name='my_bookings'),
+    path('update-booking-status/', views.update_booking_status, name='update_booking_status'),
 
 
 
