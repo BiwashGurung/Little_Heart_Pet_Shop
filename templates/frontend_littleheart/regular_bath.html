@@ -3,9 +3,9 @@
 {% load static %}
 <!-- Regular Bath Page -->
 <section class="text-center text-white d-flex align-items-center" 
-         style="background: url('/static/images/REGULAR-1.png') no-repeat center center/cover; min-height: 700px;">
+         style="background: url('/static/images/REGULAR-1.png') no-repeat center center/cover; min-height: 700px; position: relative; overflow: hidden;">
   <div class="container py-5">
-    <h1 class="display-3 fw-bold" style="color: #e75b1e;">
+    <h1 class="display-3 fw-bold" style="color: #e75b1e; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
       Regular <br>
       <span class="fs-2" style="color: #e75b1e;">Bath</span>
     </h1>
@@ -88,104 +88,161 @@
 </section>
 
 <!-- Booking Modal -->
-<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="bookingModalLabel">Book Your Pet Grooming</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 shadow-lg rounded-4" style="background: #fff; overflow-y: auto; max-height: 90vh;">
+      <div class="modal-header bg-gradient-primary text-white rounded-top-4">
+        <h5 class="modal-title" id="bookingModalLabel" style="font-family: 'Poppins', sans-serif; font-size: 1.5rem;">Book Your Pet Grooming</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form id="bookingForm">
+      <div class="modal-body p-4">
+        <div class="progress mb-4" style="height: 6px;">
+          <div class="progress-bar bg-primary" id="progressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="step-indicators mb-4 d-flex justify-content-between">
+          <span class="step-indicator">1. Customer</span>
+          <span class="step-indicator">2. Pets</span>
+          <span class="step-indicator">3. Booking</span>
+        </div>
+        <form id="bookingForm" class="needs-validation" novalidate>
           <div id="step1" class="step active">
-            <h4>Customer Details</h4>
-            <div class="mb-3">
-              <label for="fullName" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="fullName" name="full_name" required>
+            <h4 class="fw-bold text-primary mb-3">Customer Information</h4>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="fullName" name="full_name" placeholder="Full Name" required>
+                  <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control" id="contactNo" name="contact_no" placeholder="Contact No" pattern="[0-9]{10}" required>
+                  <label for="contactNo" class="form-label">Contact No <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please enter a valid 10-digit contact number.</div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                  <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="contactNo" class="form-label">Contact No <span class="text-danger">*</span></label>
-              <input type="tel" class="form-control" id="contactNo" name="contact_no" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
-              <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <button type="button" class="btn btn-primary" id="nextStep1">Next</button>
+            <button type="button" class="btn btn-primary" id="nextStep1">Next <i class="bi bi-arrow-right"></i></button>
           </div>
 
           <div id="step2" class="step">
-            <h4>Pet Info</h4>
+            <h4 class="fw-bold text-primary mb-3">Pet Information</h4>
             <div id="petContainer">
-              <div class="pet-info mb-3">
-                <label for="petName1" class="form-label">Pet Name</label>
-                <input type="text" class="form-control" id="petName1" name="petName1" required>
-                <label for="petAge1" class="form-label">Age</label>
-                <input type="number" class="form-control" id="petAge1" name="petAge1">
-                <label for="petWeight1" class="form-label">Weight <span class="text-danger">*</span></label>
-                <input type="number" class="form-control" id="petWeight1" name="petWeight1" step="0.1" required>
-                <label for="petNote1" class="form-label">Note (Medical Condition, Behavior)</label>
-                <textarea class="form-control" id="petNote1" name="petNote1"></textarea>
+              <div class="pet-info mb-3 p-3 border rounded-3">
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="text" class="form-control" id="petName1" name="petName1" placeholder="Pet Name" required>
+                      <label for="petName1">Pet Name <span class="text-danger">*</span></label>
+                      <div class="invalid-feedback">Please enter pet name.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="number" class="form-control" id="petAge1" name="petAge1" placeholder="Age" min="0">
+                      <label for="petAge1">Age</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <input type="number" class="form-control" id="petWeight1" name="petWeight1" placeholder="Weight" step="0.1" required>
+                      <label for="petWeight1">Weight (kg) <span class="text-danger">*</span></label>
+                      <div class="invalid-feedback">Please enter pet weight.</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-floating">
+                      <textarea class="form-control" id="petNote1" name="petNote1" placeholder="Note" style="height: 80px;"></textarea>
+                      <label for="petNote1">Note (Medical Condition, Behavior)</label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary" id="addPet">Add Another Pet</button>
-            <button type="button" class="btn btn-primary" id="nextStep2">Next</button>
-            <button type="button" class="btn btn-secondary" id="prevStep2">Previous</button>
+            <button type="button" class="btn btn-outline-secondary mb-3" id="addPet">Add Another Pet <i class="bi bi-plus-lg"></i></button>
+            <button type="button" class="btn btn-primary" id="nextStep2">Next <i class="bi bi-arrow-right"></i></button>
+            <button type="button" class="btn btn-outline-secondary" id="prevStep2">Previous <i class="bi bi-arrow-left"></i></button>
           </div>
 
           <div id="step3" class="step">
-            <h4>Grooming Booking</h4>
-            <div class="mb-3">
-              <label class="form-label">Service Type</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="service_type" id="washDry" value="washDry" required>
-                <label class="form-check-label" for="washDry">Wash and Dry (Rs. 1800)</label>
+            <h4 class="fw-bold text-primary mb-3">Grooming Booking</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-bold">Service Type <span class="text-danger">*</span></label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service_type" id="washDry" value="washDry" required>
+                    <label class="form-check-label" for="washDry">Wash and Dry (Rs. 1800)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service_type" id="washTidy" value="washTidy">
+                    <label class="form-check-label" for="washTidy">Wash and Tidy (Rs. 2000)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service_type" id="fullGroom" value="fullGroom">
+                    <label class="form-check-label" for="fullGroom">Full Groom (Rs. 2500)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="service_type" id="puppy" value="puppy">
+                    <label class="form-check-label" for="puppy">Puppy (Rs. 2000)</label>
+                  </div>
+                </div>
+                <div class="invalid-feedback d-block" style="display: none;">Please select a service type.</div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="service_type" id="washTidy" value="washTidy">
-                <label class="form-check-label" for="washTidy">Wash and Tidy (Rs. 2000)</label>
+              <div class="col-12">
+                <label class="form-label fw-bold">Add-ons</label>
+                <div class="d-flex flex-wrap gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="add_ons" id="deshedding" value="deshedding">
+                    <label class="form-check-label" for="deshedding">Deshedding (Rs. 500)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="add_ons" id="specialShampoo" value="specialShampoo">
+                    <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs. 300)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="add_ons" id="nailClip" value="nailClip">
+                    <label class="form-check-label" for="nailClip">Nail Clip (Rs. 200)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="add_ons" id="analGland" value="analGland">
+                    <label class="form-check-label" for="analGland">Anal Gland (Rs. 400)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="add_ons" id="teethBrushing" value="teethBrushing">
+                    <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs. 300)</label>
+                  </div>
+                </div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="service_type" id="fullGroom" value="fullGroom">
-                <label class="form-check-label" for="fullGroom">Full Groom (Rs. 2500)</label>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="datetime-local" class="form-control" id="dateTime" name="date_time" required>
+                  <label for="dateTime" class="form-label">Date and Time (9 AM - 5 PM) <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please select a date and time.</div>
+                </div>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="service_type" id="puppy" value="puppy">
-                <label class="form-check-label" for="puppy">Puppy (Rs. 2000)</label>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="totalPrice" name="total_price" readonly>
+                  <label for="totalPrice" class="form-label">Total Price</label>
+                </div>
               </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Add-ons</label>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="add_ons" id="deshedding" value="deshedding">
-                <label class="form-check-label" for="deshedding">Deshedding (Rs. 500) - Wash and Tidy/Dry</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="add_ons" id="specialShampoo" value="specialShampoo">
-                <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs. 300) - All</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="add_ons" id="nailClip" value="nailClip">
-                <label class="form-check-label" for="nailClip">Nail Clip (Rs. 200) - Wash and Dry</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="add_ons" id="analGland" value="analGland">
-                <label class="form-check-label" for="analGland">Anal Gland (Rs. 400) - All</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="add_ons" id="teethBrushing" value="teethBrushing">
-                <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs. 300) - All</label>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="dateTime" class="form-label">Date and Time (9 AM - 5 PM)</label>
-              <input type="datetime-local" class="form-control" id="dateTime" name="date_time" required>
-            </div>
-            <p><strong>Total Price: </strong><span id="totalPrice">Rs. 0.00</span></p>
-            <button type="button" class="btn btn-primary" id="confirmBooking">Confirm Booking</button>
-            <button type="button" class="btn btn-secondary" id="prevStep3">Previous</button>
+            <button type="submit" class="btn btn-success" id="confirmBooking">Confirm Booking <i class="bi bi-check-circle"></i></button>
+            <button type="button" class="btn btn-outline-secondary" id="prevStep3">Previous <i class="bi bi-arrow-left"></i></button>
           </div>
         </form>
+      </div>
+      <div class="modal-footer bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -193,85 +250,180 @@
 
 <!-- Bootstrap JS and Popper.js -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Removed bootstrap-icons from script tags -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- JavaScript for Booking Form -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
     let petCount = 1;
+    let step = 1;
 
     // Show modal and set date range
-    document.querySelector('.btn-outline-danger').addEventListener('click', function() {
+    document.querySelector('.btn-outline-danger').addEventListener('click', function () {
       modal.show();
+      initializeModal();
+    });
+
+    function initializeModal() {
+      step = 1;
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
       document.getElementById('step1').classList.add('active');
+      updateProgress(33.33);
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.querySelector('.step.active').style.display = 'block';
       const today = new Date().toISOString().slice(0, 16);
       const oneMonthLater = new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().slice(0, 16);
       document.getElementById('dateTime').setAttribute('min', today);
       document.getElementById('dateTime').setAttribute('max', oneMonthLater);
-      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
-      document.querySelector('.step.active').style.display = 'block';
-    });
+      document.getElementById('bookingForm').classList.remove('was-validated');
+      resetForm();
+    }
+
+    function updateProgress(percentage) {
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = `${percentage}%`;
+      progressBar.setAttribute('aria-valuenow', percentage);
+      document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+        indicator.classList.toggle('active', index < step);
+      });
+    }
+
+    function resetForm() {
+      document.getElementById('bookingForm').reset();
+      document.getElementById('petContainer').innerHTML = `
+        <div class="pet-info mb-3 p-3 border rounded-3">
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="petName1" name="petName1" placeholder="Pet Name" required>
+                <label for="petName1">Pet Name <span class="text-danger">*</span></label>
+                <div class="invalid-feedback">Please enter pet name.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="petAge1" name="petAge1" placeholder="Age" min="0">
+                <label for="petAge1">Age</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="petWeight1" name="petWeight1" placeholder="Weight" step="0.1" required>
+                <label for="petWeight1">Weight (kg) <span class="text-danger">*</span></label>
+                <div class="invalid-feedback">Please enter pet weight.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <textarea class="form-control" id="petNote1" name="petNote1" placeholder="Note" style="height: 80px;"></textarea>
+                <label for="petNote1">Note (Medical Condition, Behavior)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      petCount = 1;
+      document.querySelectorAll('.step-indicator').forEach(indicator => indicator.classList.remove('active'));
+      updateTotalPrice();
+    }
 
     // Step Navigation
-    document.getElementById('nextStep1').addEventListener('click', function() {
-      if (document.getElementById('contactNo').value && document.getElementById('email').value) {
+    document.getElementById('nextStep1').addEventListener('click', function () {
+      console.log('Next Step 1 clicked');
+      if (validateStep1()) {
+        console.log('Step 1 validated successfully');
+        step = 2;
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
-        document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
-        document.querySelector('.step.active').style.display = 'block';
+        transitionSteps();
       } else {
-        alert('Full Name, Contact No, and Email are required!');
+        console.log('Step 1 validation failed');
+        document.getElementById('bookingForm').classList.add('was-validated');
       }
     });
 
-    document.getElementById('nextStep2').addEventListener('click', function() {
-      let valid = true;
-      for (let i = 1; i <= petCount; i++) {
-        if (!document.getElementById(`petWeight${i}`).value) {
-          valid = false;
-          break;
-        }
-      }
-      if (valid) {
+    document.getElementById('nextStep2').addEventListener('click', function () {
+      console.log('Next Step 2 clicked');
+      if (validateStep2()) {
+        console.log('Step 2 validated successfully');
+        step = 3;
         document.getElementById('step2').classList.remove('active');
         document.getElementById('step3').classList.add('active');
-        document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
-        document.querySelector('.step.active').style.display = 'block';
-        updateTotalPrice();
+        transitionSteps();
       } else {
-        alert('Weight is required for all pets!');
+        console.log('Step 2 validation failed');
+        for (let i = 1; i <= petCount; i++) {
+          if (!document.getElementById(`petWeight${i}`).value || !document.getElementById(`petName${i}`).value) {
+            console.log(`Invalid input for pet ${i}: weight or name missing`);
+            document.getElementById(`petWeight${i}`).classList.add('is-invalid');
+            document.getElementById(`petName${i}`).classList.add('is-invalid');
+          }
+        }
       }
     });
 
-    document.getElementById('prevStep2').addEventListener('click', function() {
+    document.getElementById('prevStep2').addEventListener('click', function () {
+      console.log('Previous Step 2 clicked');
+      step = 1;
       document.getElementById('step2').classList.remove('active');
       document.getElementById('step1').classList.add('active');
-      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
-      document.querySelector('.step.active').style.display = 'block';
+      transitionSteps();
+      updateProgress(33.33);
     });
 
-    document.getElementById('prevStep3').addEventListener('click', function() {
+    document.getElementById('prevStep3').addEventListener('click', function () {
+      console.log('Previous Step 3 clicked');
+      step = 2;
       document.getElementById('step3').classList.remove('active');
       document.getElementById('step2').classList.add('active');
-      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
-      document.querySelector('.step.active').style.display = 'block';
+      transitionSteps();
+      updateProgress(66.66);
     });
 
+    function transitionSteps() {
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.querySelector('.step.active').style.display = 'block';
+      updateProgress(step === 1 ? 33.33 : step === 2 ? 66.66 : 100);
+    }
+
     // Add Another Pet
-    document.getElementById('addPet').addEventListener('click', function() {
+    document.getElementById('addPet').addEventListener('click', function () {
+      console.log('Add Pet clicked');
       petCount++;
       const petDiv = document.createElement('div');
-      petDiv.className = 'pet-info mb-3';
+      petDiv.className = 'pet-info mb-3 p-3 border rounded-3';
       petDiv.innerHTML = `
-        <label for="petName${petCount}" class="form-label">Pet Name</label>
-        <input type="text" class="form-control" id="petName${petCount}" name="petName${petCount}" required>
-        <label for="petAge${petCount}" class="form-label">Age</label>
-        <input type="number" class="form-control" id="petAge${petCount}" name="petAge${petCount}">
-        <label for="petWeight${petCount}" class="form-label">Weight <span class="text-danger">*</span></label>
-        <input type="number" class="form-control" id="petWeight${petCount}" name="petWeight${petCount}" step="0.1" required>
-        <label for="petNote${petCount}" class="form-label">Note (Medical Condition, Behavior)</label>
-        <textarea class="form-control" id="petNote${petCount}" name="petNote${petCount}"></textarea>
+        <div class="row g-2">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="petName${petCount}" name="petName${petCount}" placeholder="Pet Name" required>
+              <label for="petName${petCount}">Pet Name <span class="text-danger">*</span></label>
+              <div class="invalid-feedback">Please enter pet name.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="petAge${petCount}" name="petAge${petCount}" placeholder="Age" min="0">
+              <label for="petAge${petCount}">Age</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="petWeight${petCount}" name="petWeight${petCount}" placeholder="Weight" step="0.1" required>
+              <label for="petWeight${petCount}">Weight (kg) <span class="text-danger">*</span></label>
+              <div class="invalid-feedback">Please enter pet weight.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <textarea class="form-control" id="petNote${petCount}" name="petNote${petCount}" placeholder="Note" style="height: 80px;"></textarea>
+              <label for="petNote${petCount}">Note (Medical Condition, Behavior)</label>
+            </div>
+          </div>
+        </div>
       `;
       document.getElementById('petContainer').appendChild(petDiv);
     });
@@ -284,16 +436,81 @@
       const addOnPrices = { deshedding: 500, specialShampoo: 300, nailClip: 200, analGland: 400, teethBrushing: 300 };
       let total = basePrices[serviceType] || 0;
       addOns.forEach(add_on => total += addOnPrices[add_on] || 0);
-      document.getElementById('totalPrice').textContent = `Rs. ${total.toFixed(2)}`;
+      document.getElementById('totalPrice').value = `Rs. ${total.toFixed(2)}`;
     }
 
     document.querySelectorAll('input[name="service_type"], input[name="add_ons"]').forEach(input => {
       input.addEventListener('change', updateTotalPrice);
     });
 
+    // Form Validation
+    function validateStep1() {
+      const form = document.getElementById('bookingForm');
+      const step1Inputs = document.querySelectorAll('#step1 input[required]');
+      let isValid = true;
+
+      console.log('Validating Step 1:');
+      step1Inputs.forEach(input => {
+        if (!input.value.trim()) {
+          console.log(`Invalid field: ${input.id} - Value is empty`);
+          input.classList.add('is-invalid');
+          isValid = false;
+        } else if (input.id === 'contactNo' && !/^\d{10}$/.test(input.value)) {
+          console.log(`Invalid field: ${input.id} - Value "${input.value}" does not match 10-digit pattern`);
+          input.classList.add('is-invalid');
+          isValid = false;
+        } else if (input.id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
+          console.log(`Invalid field: ${input.id} - Value "${input.value}" is not a valid email`);
+          input.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          input.classList.remove('is-invalid');
+        }
+      });
+
+      if (isValid) {
+        console.log('Validation passed for Step 1');
+      } else {
+        console.log('Validation failed for Step 1');
+      }
+      return isValid;
+    }
+
+    function validateStep2() {
+      let valid = true;
+      for (let i = 1; i <= petCount; i++) {
+        const weight = document.getElementById(`petWeight${i}`);
+        const name = document.getElementById(`petName${i}`);
+        if (!weight.value || !name.value) {
+          valid = false;
+          weight.classList.add('is-invalid');
+          name.classList.add('is-invalid');
+          console.log(`Validation failed for pet ${i}: weight or name missing`);
+        } else {
+          weight.classList.remove('is-invalid');
+          name.classList.remove('is-invalid');
+        }
+      }
+      return valid;
+    }
+
+    function validateStep3() {
+      const form = document.getElementById('bookingForm');
+      if (!form.checkValidity()) {
+        console.log('Validation failed for Step 3');
+        form.classList.add('was-validated');
+        return false;
+      }
+      console.log('Validation passed for Step 3');
+      return true;
+    }
+
     // Confirm Booking
-    document.getElementById('confirmBooking').addEventListener('click', function() {
-      const formData = new FormData(document.getElementById('bookingForm'));
+    document.getElementById('bookingForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      if (!validateStep3()) return;
+
+      const formData = new FormData(this);
       const data = {};
       for (let [key, value] of formData.entries()) {
         data[key] = value;
@@ -313,6 +530,7 @@
       }
       data.add_ons = Array.from(formData.getAll('add_ons'));
       data.date_time = new Date(document.getElementById('dateTime').value).toISOString();
+      data.total_price = document.getElementById('totalPrice').value.replace('Rs. ', '');
 
       fetch('/book-appointment/', {
         method: 'POST',
@@ -325,14 +543,28 @@
       .then(response => response.json())
       .then(result => {
         if (result.success) {
-          alert('Booking confirmed! Redirecting to My Bookings...');
-          window.location.href = '/my_bookings/';
+          Swal.fire({
+            icon: 'success',
+            title: 'Booking Confirmed!',
+            text: 'Redirecting to My Bookings...',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(() => {
+            window.location.href = '/my_bookings/';
+          });
         } else {
-          alert('Error: ' + result.message);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: result.message || 'Something went wrong.',
+          });
         }
       })
       .catch(error => console.error('Error:', error));
     });
+
+    // Initial call to set default price
+    updateTotalPrice();
   });
 
   // Step styling
@@ -345,5 +577,55 @@
 <style>
   .step { display: none; }
   .step.active { display: block; }
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #e75b1e 0%, #ff8c42 100%);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .step-indicators {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  .step-indicators .step-indicator {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    cursor: default;
+  }
+  .step-indicators .step-indicator.active {
+    color: #e75b1e;
+    font-weight: 500;
+  }
+  .step-indicators .step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background: #dee2e6;
+    z-index: -1;
+  }
+  .step-indicators .step-indicator:first-child::before,
+  .step-indicators .step-indicator:last-child::before {
+    width: 50%;
+  }
+  .step-indicators .step-indicator.active::before {
+    background: #e75b1e;
+  }
+  .form-floating label { font-size: 0.9rem; }
+  .form-control:focus { border-color: #e75b1e; box-shadow: 0 0 0 0.2rem rgba(231, 91, 30, 0.25); }
+  @media (max-width: 768px) {
+    .modal-dialog { max-width: 90%; }
+    .row.g-3 > .col-md-6 { flex: 0 0 100%; max-width: 100%; }
+    h4 { font-size: 1.25rem; }
+    .step-indicators { font-size: 0.8rem; }
+  }
+  @media (max-width: 576px) {
+    .modal-dialog { max-width: 95%; }
+    .form-floating label { font-size: 0.85rem; }
+    .btn { font-size: 0.875rem; padding: 0.25rem 0.5rem; }
+  }
 </style>
 {% endblock content %}
