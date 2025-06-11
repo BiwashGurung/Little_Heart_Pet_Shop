@@ -175,6 +175,60 @@ def cat(request):
 
 
 
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from datetime import timedelta
+from .models import Booking
+import json
+
+@login_required
+def regular_bathing(request):
+    return render(request, 'frontend_littleheart/regular_bath.html', {})
+
+@csrf_exempt
+@login_required
+def get_time_slots(request):
+    date_str = request.GET.get('date')
+    if not date_str:
+        return JsonResponse({'success': False, 'message': 'Date parameter is required'}, status=400)
+
+    try:
+        date = timezone.datetime.strptime(date_str, '%Y-%m-%d').date()
+        today = timezone.now().date()
+        max_date = today + timedelta(days=30)
+
+        if not (today <= date <= max_date):
+            return JsonResponse({'success': False, 'message': 'Please select a date within the next 30 days.'}, status=400)
+
+        # Generate time slots from 9:00 AM to 4:00 PM in 15-minute increments
+        time_slots = []
+        for hour in range(9, 17):  # 9 AM to 4 PM
+            for minute in [0, 15, 30, 45]:
+                if hour == 16 and minute > 0:  # Exclude after 4:00 PM
+                    continue
+                time_str = f"{hour:02d}:{minute:02d}"
+                if hour == 0:
+                    display_time = f"12:{minute:02d} AM"
+                elif hour < 12:
+                    display_time = f"{hour}:{minute:02d} AM"
+                elif hour == 12:
+                    display_time = f"12:{minute:02d} PM"
+                else:
+                    display_time = f"{hour - 12}:{minute:02d} PM"
+                time_slots.append(display_time)
+
+        # Exclude booked slots
+        booked_times = Booking.objects.filter(date_time__date=date).values_list('date_time__time', flat=True)
+        available_slots = [slot for slot in time_slots if slot not in booked_times]
+
+        return JsonResponse({'success': True, 'time_slots': available_slots})
+    except ValueError:
+        return JsonResponse({'success': False, 'message': 'Invalid date format'}, status=400)
 
 @csrf_exempt
 @login_required
@@ -185,18 +239,18 @@ def book_appointment(request):
             pets = data.get('pets', [])
             service_type = data.get('service_type')
             add_ons = data.get('add_ons', [])
-            date_time_str = data.get('date_time')  # Received as ISO string
+            date_time_str = data.get('date_time')
             total_price = calculate_total_price(service_type, add_ons)
 
-            # Convert string to datetime object
-            date_time = timezone.datetime.fromisoformat(date_time_str.replace('Z', '+00:00'))
+            # Convert to datetime
+            date_time = timezone.datetime.strptime(date_time_str, '%Y-%m-%d %I:%M %p')
 
-            # Check for existing booking at the same date and time
+            # Check for existing booking
             existing_booking = Booking.objects.filter(date_time=date_time).exists()
             if existing_booking:
                 return JsonResponse({'success': False, 'message': 'This date and time is already booked.'})
 
-            # Validate date range (today to 1 month)
+            # Validate date range
             today = timezone.now().date()
             max_date = today + timedelta(days=30)
             if not (today <= date_time.date() <= max_date):
@@ -215,9 +269,7 @@ def book_appointment(request):
             )
             booking.save()
 
-            # Send confirmation email to user
             send_booking_email(booking, request.user.email)
-
             return JsonResponse({'success': True, 'message': 'Booking saved successfully'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
@@ -241,8 +293,6 @@ def update_booking_status(request):
             booking = Booking.objects.get(id=booking_id)
             booking.status = status
             booking.save()
-
-            # Send status update email to user
             send_status_update_email(booking, booking.email)
             return JsonResponse({'success': True, 'message': 'Status updated successfully'})
         except Booking.DoesNotExist:
