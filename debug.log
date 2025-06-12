@@ -2326,3 +2326,73 @@ Traceback (most recent call last):
   File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\template\base.py", line 615, in find_filter
     raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
 django.template.exceptions.TemplateSyntaxError: Invalid filter: 'int'
+ERROR 2025-06-12 10:00:10,217 log Internal Server Error: /get-time-slots/
+Traceback (most recent call last):
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\frontend_littleheart\views.py", line 191, in get_time_slots
+    display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                   ~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+ERROR 2025-06-12 10:06:48,322 log Internal Server Error: /get-time-slots/
+Traceback (most recent call last):
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\frontend_littleheart\views.py", line 191, in get_time_slots
+    display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                   ~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+ERROR 2025-06-12 10:07:11,713 log Internal Server Error: /get-time-slots/
+Traceback (most recent call last):
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\LittleHeart\Lib\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\frontend_littleheart\views.py", line 191, in get_time_slots
+    display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                   ~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+ERROR 2025-06-12 10:52:13,235 log Internal Server Error: /get-time-slots/
+ERROR 2025-06-12 10:52:40,599 log Internal Server Error: /get-time-slots/
+ERROR 2025-06-12 11:06:34,285 views Unexpected error in get_time_slots: unsupported operand type(s) for +: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\frontend_littleheart\views.py", line 186, in get_time_slots
+    display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                   ~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+ERROR 2025-06-12 11:06:34,286 log Internal Server Error: /get-time-slots/
+ERROR 2025-06-12 11:07:17,661 views Unexpected error in get_time_slots: unsupported operand type(s) for +: 'int' and 'str'
+Traceback (most recent call last):
+  File "C:\Users\DEXY GURUNG\Documents\ByteSoft Nepal\LittleHeartNepal\frontend_littleheart\views.py", line 186, in get_time_slots
+    display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                   ~~~~~~~~~~~~~~~~~~^~~~~
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+ERROR 2025-06-12 11:07:17,662 log Internal Server Error: /get-time-slots/

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
-from .models import UserProfile , Contact
+from .models import UserProfile, Contact
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=150, required=True, label="Username")
@@ -18,7 +18,6 @@ class RegistrationForm(forms.Form):
     address = forms.CharField(widget=forms.Textarea, required=True, label="Home Address")
     password = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
     confirm_password = forms.CharField(widget=forms.PasswordInput, required=True, label="Confirm Password")
-    otp = forms.CharField(max_length=6, required=False, label="OTP", help_text="Enter the OTP sent to your email")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -42,11 +41,6 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError("This email is already registered.")
         return email
 
-
-
-
-
-
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
@@ -59,5 +53,5 @@ class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            if field_name not in ['message', 'phone']:  # Already styled
+            if field_name not in ['message', 'phone']:
                 field.widget.attrs.update({'class': 'form-control border-danger'})

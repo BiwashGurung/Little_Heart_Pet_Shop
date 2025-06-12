@@ -2,25 +2,21 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(max_length=15, unique=True)
     address = models.TextField()
 
     class Meta:
-        db_table = 'little_heart_users'  # Set the table name to little_heart_users
+        db_table = 'little_heart_users'
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
-    
-
 
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    phone = models.CharField(max_length=15, blank=True, null=True)  # Optional phone field
+    phone = models.CharField(max_length=15, blank=True, null=True)
     subject = models.CharField(max_length=200)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,9 +26,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
-    
-
-
 
 class Blog(models.Model):
     title = models.CharField(max_length=200)
@@ -54,23 +47,6 @@ class Blog(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
-
-class OTP(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    email = models.EmailField()
-    otp_code = models.CharField(max_length=6)
-    created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField()
-    is_verified = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = 'little_heart_otps'
-
-    def __str__(self):
-        return f"OTP for {self.email}"   
-
-
-
 class Booking(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
@@ -80,7 +56,7 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     contact_no = models.CharField(max_length=15)
-    email = models.EmailField()
+    email = models.EmailField(max_length=50, default='littleheart@gmail.com')
     pets = models.JSONField(default=list)
     service_type = models.CharField(max_length=50)
     add_ons = models.JSONField(default=list)
