@@ -292,3 +292,19 @@ def send_status_update_email(booking, recipient_email):
         [recipient_email],
         fail_silently=False,
     )
+
+
+@login_required
+def get_user_profile(request):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        return JsonResponse({
+            'success': True,
+            'full_name': user_profile.user.username,
+            'contact_no': user_profile.phone
+        })
+    except UserProfile.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'message': 'User profile not found'
+        })    

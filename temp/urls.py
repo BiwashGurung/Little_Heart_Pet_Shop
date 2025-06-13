@@ -21,7 +21,8 @@ urlpatterns = [
     path('get-time-slots/', views.get_time_slots, name='get_time_slots'),
     path('book-appointment/', views.book_appointment, name='book_appointment'),
     path('my_bookings/', views.my_bookings, name='my_bookings'),
-    path('update-booking-status/', views.update_booking_status, name='update_booking_status'),          
+    path('update-booking-status/', views.update_booking_status, name='update_booking_status'),   
+    path('get-user-profile/', views.get_user_profile, name='get_user_profile'),       
 
 
 
