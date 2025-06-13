@@ -532,8 +532,8 @@
           timeSelect.innerHTML = '<option value="">Select Time</option>';
           data.time_slots.forEach(time => {
             const option = document.createElement('option');
-            option.value = time;
-            option.textContent = time;
+            option.value = time.time; // Use the 'time' field (e.g., "09:00") as the value
+            option.textContent = time.display; // Use the 'display' field (e.g., "9:00 AM") as the visible text
             timeSelect.appendChild(option);
           });
         } else {

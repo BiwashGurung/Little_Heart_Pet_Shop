@@ -152,7 +152,7 @@ def get_time_slots(request):
                 if hour == 16 and minute > 0:
                     continue
                 time_str = f"{hour:02d}:{minute:02d}"
-                display_time = (hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                display_time = str(hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
                 time_slots.append({'time': time_str, 'display': display_time})
 
         booked_times = Booking.objects.filter(date_time__date=date).values_list('date_time__time', flat=True)
@@ -161,6 +161,7 @@ def get_time_slots(request):
         return JsonResponse({'success': True, 'time_slots': available_slots})
     except ValueError:
         return JsonResponse({'success': False, 'message': 'Invalid date format'}, status=400)
+    
 
 @csrf_exempt
 @login_required
@@ -168,7 +169,8 @@ def book_appointment(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            user_profile = UserProfile.objects.get(user=request.user)
+            # Check if UserProfile exists, create it if it doesn't
+            user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             full_name = data.get('full_name', user_profile.user.username)
             contact_no = data.get('contact_no', user_profile.phone)
             email = data.get('email', user_profile.user.email)
