@@ -18,6 +18,7 @@ from django.contrib.auth import login as django_login
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
+
 logger = logging.getLogger(__name__)
 
 def home(request):
@@ -161,7 +162,6 @@ def get_time_slots(request):
         return JsonResponse({'success': True, 'time_slots': available_slots})
     except ValueError:
         return JsonResponse({'success': False, 'message': 'Invalid date format'}, status=400)
-    
 
 @csrf_exempt
 @login_required
@@ -169,20 +169,21 @@ def book_appointment(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            # Check if UserProfile exists, create it if it doesn't
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             full_name = data.get('full_name', user_profile.user.username)
-            contact_no = data.get('contact_no', user_profile.phone)
-            email = data.get('email', user_profile.user.email)
+            contact_no = data.get('contact_no', user_profile.phone or '')
+            email = user_profile.user.email  # Using user email from profile
 
             pets = data.get('pets', [])
             service_type = data.get('service_type')
             add_ons = data.get('add_ons', [])
             date_time_str = data.get('date_time')
-            total_price = calculate_total_price(service_type, add_ons)
+            # Ensure weight is a float, default to 0 if not a valid number
+            weight = float(pets[0]['weight']) if pets and 'weight' in pets[0] and pets[0]['weight'] else 0.0
+            total_price = calculate_total_price(service_type, add_ons, weight)
 
             date_time = timezone.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
-            duration = get_service_duration(service_type)
+            duration = get_service_duration(service_type, weight)
             if 'deshedding' in add_ons:
                 duration += timedelta(minutes=15)
             end_time = date_time + duration
@@ -214,6 +215,8 @@ def book_appointment(request):
 
             send_booking_email(booking, email)
             return JsonResponse({'success': True, 'message': 'Booking saved successfully'})
+        except (ValueError, KeyError) as e:
+            return JsonResponse({'success': False, 'message': f'Invalid data: {str(e)}'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
     return JsonResponse({'success': False, 'message': 'Invalid request'})
@@ -234,17 +237,47 @@ def update_booking_status(request):
             return JsonResponse({'success': False, 'message': 'Booking not found'})
     return JsonResponse({'success': False, 'message': 'Invalid request or insufficient permissions'})
 
-def calculate_total_price(service_type, add_ons):
-    base_prices = {'washDry': 1800, 'washTidy': 2000, 'fullGroom': 2500, 'puppy': 2000}
-    add_on_prices = {'deshedding': 500, 'specialShampoo': 300, 'nailClip': 200, 'analGland': 400, 'teethBrushing': 300}
-    total = base_prices.get(service_type, 0)
+def calculate_total_price(service_type, add_ons, weight):
+    base_prices = {
+        'washDry': {'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000},
+        'washTidy': {'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000},
+        'fullGroom': {'XS': 1500, 'S': 2000, 'M': 2500, 'L': 3500},
+        'puppy': {'XS': 1500, 'S': 1500, 'M': 1500, 'L': 1500}
+    }
+    if weight < 5:
+        size = 'XS'
+    elif weight <= 11:
+        size = 'S'
+    elif weight <= 19:
+        size = 'M'
+    elif weight <= 30:
+        size = 'L'
+    else:
+        size = 'Special'
+    total = base_prices.get(service_type, {}).get(size, 0)
+    add_on_prices = {'deshedding': 200, 'specialShampoo': 200, 'nailClip': 200, 'analGland': 200, 'teethBrushing': 200}
     for add_on in add_ons:
         total += add_on_prices.get(add_on, 0)
     return total
 
-def get_service_duration(service_type):
-    durations = {'washDry': timedelta(minutes=60), 'washTidy': timedelta(minutes=75), 'fullGroom': timedelta(minutes=120), 'puppy': timedelta(minutes=90)}
-    return durations.get(service_type, timedelta(minutes=0))
+def get_service_duration(service_type, weight):
+    durations = {
+        'washDry': {'XS': timedelta(minutes=45), 'S': timedelta(hours=1), 'M': timedelta(minutes=90), 'L': timedelta(hours=2)},
+        'washTidy': {'XS': timedelta(minutes=45), 'S': timedelta(minutes=75), 'M': timedelta(minutes=90), 'L': timedelta(hours=2)},
+        'fullGroom': {'XS': timedelta(minutes=90), 'S': timedelta(hours=2), 'M': timedelta(minutes=150), 'L': timedelta(minutes=210)},
+        'puppy': {'XS': timedelta(minutes=90), 'S': timedelta(minutes=90), 'M': timedelta(minutes=90), 'L': timedelta(minutes=90)}
+    }
+    if weight < 5:
+        size = 'XS'
+    elif weight <= 11:
+        size = 'S'
+    elif weight <= 19:
+        size = 'M'
+    elif weight <= 30:
+        size = 'L'
+    else:
+        size = 'Special'
+    return durations.get(service_type, {}).get(size, timedelta(minutes=0))
 
 def send_booking_email(booking, recipient_email):
     subject = 'Your Pet Grooming Booking Confirmation'
@@ -293,7 +326,6 @@ def send_status_update_email(booking, recipient_email):
         fail_silently=False,
     )
 
-
 @login_required
 def get_user_profile(request):
     try:
@@ -307,4 +339,4 @@ def get_user_profile(request):
         return JsonResponse({
             'success': False,
             'message': 'User profile not found'
-        })    
+        })
