@@ -18,7 +18,6 @@ from django.contrib.auth import login as django_login
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 
-
 logger = logging.getLogger(__name__)
 
 def home(request):
@@ -33,9 +32,9 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             if remember_me:
-                request.session.set_expiry(604800)
+                request.session.set_expiry(604800)  # 7 days
             else:
-                request.session.set_expiry(0)
+                request.session.set_expiry(0)  # Session ends on browser close
             messages.success(request, "Login successful!")
             return redirect('home')
         else:
@@ -144,8 +143,8 @@ def get_time_slots(request):
         today = timezone.now().date()
         max_date = today + timedelta(days=30)
 
-        if not (today <= date <= max_date):
-            return JsonResponse({'success': False, 'message': 'Please select a date within the next 30 days.'}, status=400)
+        if date < today or date > max_date:
+            return JsonResponse({'success': False, 'message': 'Please select a date within the next 30 days from today.'}, status=400)
 
         time_slots = []
         for hour in range(9, 17):  # 9 AM to 4 PM
@@ -153,15 +152,19 @@ def get_time_slots(request):
                 if hour == 16 and minute > 0:
                     continue
                 time_str = f"{hour:02d}:{minute:02d}"
-                display_time = str(hour % 12 or 12) + ':' + f"{minute:02d}" + (' PM' if hour >= 12 else ' AM')
+                display_time = f"{hour % 12 or 12}:{minute:02d} {'PM' if hour >= 12 else 'AM'}"
                 time_slots.append({'time': time_str, 'display': display_time})
 
+        # Fetch booked times for the selected date
         booked_times = Booking.objects.filter(date_time__date=date).values_list('date_time__time', flat=True)
         available_slots = [slot for slot in time_slots if slot['time'] not in booked_times]
 
         return JsonResponse({'success': True, 'time_slots': available_slots})
     except ValueError:
         return JsonResponse({'success': False, 'message': 'Invalid date format'}, status=400)
+    except Exception as e:
+        logger.error(f"Error in get_time_slots: {str(e)}")
+        return JsonResponse({'success': False, 'message': 'An unexpected error occurred'}, status=500)
 
 @csrf_exempt
 @login_required
@@ -172,34 +175,48 @@ def book_appointment(request):
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             full_name = data.get('full_name', user_profile.user.username)
             contact_no = data.get('contact_no', user_profile.phone or '')
-            email = user_profile.user.email  # Using user email from profile
+            email = user_profile.user.email or settings.DEFAULT_FROM_EMAIL  # Fallback to default email
 
             pets = data.get('pets', [])
-            service_type = data.get('service_type')
+            if not pets:
+                return JsonResponse({'success': False, 'message': 'At least one pet is required'}, status=400)
+
+            service_type = data.get('service_type', 'washDry')  # Default to 'washDry' if not provided
+            if service_type not in ['washDry', 'washTidy', 'fullGroom', 'puppy']:
+                return JsonResponse({'success': False, 'message': 'Invalid service type'}, status=400)
+
             add_ons = data.get('add_ons', [])
             date_time_str = data.get('date_time')
-            # Ensure weight is a float, default to 0 if not a valid number
-            weight = float(pets[0]['weight']) if pets and 'weight' in pets[0] and pets[0]['weight'] else 0.0
+            if not date_time_str:
+                return JsonResponse({'success': False, 'message': 'Date and time are required'}, status=400)
+
+            # Validate and calculate weight from the first pet
+            weight = float(pets[0].get('weight', 0)) if pets and pets[0].get('weight') else 0.0
             total_price = calculate_total_price(service_type, add_ons, weight)
 
+            # Parse and validate date_time
             date_time = timezone.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M')
             duration = get_service_duration(service_type, weight)
             if 'deshedding' in add_ons:
                 duration += timedelta(minutes=15)
             end_time = date_time + duration
-            existing_booking = Booking.objects.filter(
+
+            # Check for overlapping bookings
+            overlapping = Booking.objects.filter(
                 date_time__lt=end_time, date_time__gte=date_time
             ).exists() or Booking.objects.filter(
                 date_time__lte=date_time, date_time__gt=date_time - duration
             ).exists()
-            if existing_booking:
-                return JsonResponse({'success': False, 'message': 'This date and time is already booked or overlaps with another booking.'})
+            if overlapping:
+                return JsonResponse({'success': False, 'message': 'This date and time overlaps with an existing booking.'})
 
+            # Date range validation
             today = timezone.now().date()
             max_date = today + timedelta(days=30)
-            if not (today <= date_time.date() <= max_date):
+            if date_time.date() < today or date_time.date() > max_date:
                 return JsonResponse({'success': False, 'message': 'Please select a date within the next 30 days.'})
 
+            # Create booking
             booking = Booking(
                 user=request.user,
                 full_name=full_name,
@@ -209,17 +226,27 @@ def book_appointment(request):
                 service_type=service_type,
                 add_ons=add_ons,
                 date_time=date_time,
-                total_price=total_price
+                total_price=total_price,
+                status='pending'  # Default status
             )
             booking.save()
 
-            send_booking_email(booking, email)
+            # Send confirmation email
+            try:
+                send_booking_email(booking, email)
+            except Exception as e:
+                logger.error(f"Failed to send booking email for booking {booking.id}: {str(e)}")
+                messages.error(request, "Booking saved, but email failed to send. Please check your email settings.")
+
             return JsonResponse({'success': True, 'message': 'Booking saved successfully'})
-        except (ValueError, KeyError) as e:
-            return JsonResponse({'success': False, 'message': f'Invalid data: {str(e)}'})
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
+        except ValueError as e:
+            return JsonResponse({'success': False, 'message': f'Invalid data format: {str(e)}'}, status=400)
         except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
-    return JsonResponse({'success': False, 'message': 'Invalid request'})
+            logger.error(f"Error in book_appointment: {str(e)}")
+            return JsonResponse({'success': False, 'message': 'An unexpected error occurred'}, status=500)
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
 
 @csrf_exempt
 @login_required
@@ -229,13 +256,18 @@ def update_booking_status(request):
         status = request.POST.get('status')
         try:
             booking = Booking.objects.get(id=booking_id)
+            if status not in ['pending', 'confirmed', 'completed', 'cancelled']:
+                return JsonResponse({'success': False, 'message': 'Invalid status'}, status=400)
             booking.status = status
             booking.save()
             send_status_update_email(booking, booking.email)
             return JsonResponse({'success': True, 'message': 'Status updated successfully'})
         except Booking.DoesNotExist:
             return JsonResponse({'success': False, 'message': 'Booking not found'})
-    return JsonResponse({'success': False, 'message': 'Invalid request or insufficient permissions'})
+        except Exception as e:
+            logger.error(f"Error updating booking status {booking_id}: {str(e)}")
+            return JsonResponse({'success': False, 'message': 'An error occurred while updating status'})
+    return JsonResponse({'success': False, 'message': 'Invalid request or insufficient permissions'}, status=403)
 
 def calculate_total_price(service_type, add_ons, weight):
     base_prices = {
@@ -253,12 +285,12 @@ def calculate_total_price(service_type, add_ons, weight):
     elif weight <= 30:
         size = 'L'
     else:
-        size = 'Special'
+        size = 'Special'  # Handle weights > 30kg with custom pricing if needed
     total = base_prices.get(service_type, {}).get(size, 0)
     add_on_prices = {'deshedding': 200, 'specialShampoo': 200, 'nailClip': 200, 'analGland': 200, 'teethBrushing': 200}
     for add_on in add_ons:
         total += add_on_prices.get(add_on, 0)
-    return total
+    return total if total > 0 else 0  # Ensure non-negative price
 
 def get_service_duration(service_type, weight):
     durations = {
@@ -276,7 +308,7 @@ def get_service_duration(service_type, weight):
     elif weight <= 30:
         size = 'L'
     else:
-        size = 'Special'
+        size = 'Special'  # Default to a reasonable duration for weights > 30kg
     return durations.get(service_type, {}).get(size, timedelta(minutes=0))
 
 def send_booking_email(booking, recipient_email):
@@ -285,22 +317,26 @@ def send_booking_email(booking, recipient_email):
     Dear {booking.full_name},
 
     Your booking has been successfully created with the following details:
-    - Date & Time: {booking.date_time}
+    - Date & Time: {booking.date_time.strftime('%Y-%m-%d %I:%M %p')}
     - Service Type: {booking.service_type}
     - Total Price: Rs. {booking.total_price}
     - Status: {booking.status}
-    - Pets: {booking.pets}
+    - Pets: {json.dumps(booking.pets)}
 
     Thank you for choosing us!
     Little Heart Pet Shop
     """
-    send_mail(
-        subject,
-        message,
-        settings.EMAIL_HOST_USER,
-        [recipient_email],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [recipient_email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        logger.error(f"Email sending failed for booking {booking.id}: {str(e)}")
+        raise
 
 def send_status_update_email(booking, recipient_email):
     subject = 'Your Pet Grooming Booking Status Update'
@@ -310,21 +346,25 @@ def send_status_update_email(booking, recipient_email):
     The status of your booking has been updated to: {booking.status}
 
     Booking Details:
-    - Date & Time: {booking.date_time}
+    - Date & Time: {booking.date_time.strftime('%Y-%m-%d %I:%M %p')}
     - Service Type: {booking.service_type}
     - Total Price: Rs. {booking.total_price}
-    - Pets: {booking.pets}
+    - Pets: {json.dumps(booking.pets)}
 
     Thank you!
     Little Heart Pet Shop
     """
-    send_mail(
-        subject,
-        message,
-        settings.EMAIL_HOST_USER,
-        [recipient_email],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [recipient_email],
+            fail_silently=False,
+        )
+    except Exception as e:
+        logger.error(f"Email sending failed for status update {booking.id}: {str(e)}")
+        raise
 
 @login_required
 def get_user_profile(request):
@@ -333,10 +373,43 @@ def get_user_profile(request):
         return JsonResponse({
             'success': True,
             'full_name': user_profile.user.username,
-            'contact_no': user_profile.phone
+            'contact_no': user_profile.phone or ''
         })
     except UserProfile.DoesNotExist:
         return JsonResponse({
             'success': False,
             'message': 'User profile not found'
         })
+
+@login_required
+@csrf_exempt
+def check_booking_availability(request):
+    if request.method == 'GET':
+        date_str = request.GET.get('date')
+        start_time = request.GET.get('start')
+        duration = int(request.GET.get('duration', 0))  # Duration in minutes
+
+        if not all([date_str, start_time, duration]):
+            return JsonResponse({'success': False, 'message': 'Missing required parameters'}, status=400)
+
+        try:
+            date = timezone.datetime.strptime(date_str, '%Y-%m-%d').date()
+            start_datetime = timezone.datetime.strptime(f"{date_str} {start_time}", '%Y-%m-%d %H:%M')
+            end_datetime = start_datetime + timezone.timedelta(minutes=duration)
+
+            # Check for overlapping bookings
+            overlapping = Booking.objects.filter(
+                date_time__lt=end_datetime,
+                date_time__gte=start_datetime
+            ).exists() or Booking.objects.filter(
+                date_time__lte=start_datetime,
+                date_time__gt=start_datetime - timezone.timedelta(minutes=duration)
+            ).exists()
+
+            return JsonResponse({'success': True, 'is_overlapping': overlapping})
+        except ValueError:
+            return JsonResponse({'success': False, 'message': 'Invalid date or time format'}, status=400)
+        except Exception as e:
+            logger.error(f"Error in check_booking_availability: {str(e)}")
+            return JsonResponse({'success': False, 'message': 'An unexpected error occurred'}, status=500)
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)

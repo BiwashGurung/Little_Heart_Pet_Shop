@@ -164,74 +164,96 @@
             <button type="button" class="btn btn-outline-secondary" id="prevStep2">Previous <i class="bi bi-arrow-left"></i></button>
           </div>
 
-          <div id="step3" class="step">
-            <h4 class="fw-bold text-primary mb-3">Grooming Booking</h4>
-            <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label fw-bold">Service Type <span class="text-danger">*</span></label>
-                <select class="form-select mb-3" id="serviceType" name="service_type" required>
-                  <option value="">Select Service</option>
-                  <option value="washDry">Wash and Dry</option>
-                  <option value="washTidy">Wash and Tidy</option>
-                  <option value="fullGroom">Full Groom</option>
-                  <option value="puppy">Puppy</option>
-                </select>
-                <div class="invalid-feedback">Please select a service type.</div>
-                <div id="durationInfo" class="text-muted small"></div>
-              </div>
-              <div class="col-12" id="addOnsContainer">
-                <label class="form-label fw-bold">Add-ons</label>
-                <div class="d-flex flex-wrap gap-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="add_ons" id="deshedding" value="deshedding">
-                    <label class="form-check-label" for="deshedding">Deshedding (15 min, Rs. 200) <span class="text-muted">(Wash and Tidy/Dry)</span></label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="add_ons" id="specialShampoo" value="specialShampoo">
-                    <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs. 200) <span class="text-muted">(All)</span></label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="add_ons" id="nailClip" value="nailClip">
-                    <label class="form-check-label" for="nailClip">Nail Clip (Rs. 200) <span class="text-muted">(Wash and Dry)</span></label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="add_ons" id="analGland" value="analGland">
-                    <label class="form-check-label" for="analGland">Anal Gland (Rs. 200) <span class="text-muted">(All)</span></label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="add_ons" id="teethBrushing" value="teethBrushing">
-                    <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs. 200) <span class="text-muted">(All)</span></label>
+          <!-- Step 3: Date, Time, and Service Selection -->
+          <div class="step" id="step3" style="display: none;">
+            <h4 class="text-center mb-4">Step 3: Select Date, Time & Service</h4>
+            <form id="bookingForm" novalidate>
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="date" class="form-control" id="bookingDate" name="date" required>
+                    <label for="bookingDate">Select Date <span class="text-danger">*</span></label>
+                    <div class="invalid-feedback">Please select a date.</div>
                   </div>
                 </div>
-                <p class="text-warning small mt-2">Note: Flea and tick shampoo will be applied if fleas are found during grooming to prevent spreading.</p>
+                <div class="col-12">
+                  <div class="form-floating">
+                    <select class="form-select" id="bookingTime" name="time" required>
+                      <option value="">Select Time</option>
+                    </select>
+                    <label for="bookingTime">Select Time <span class="text-danger">*</span></label>
+                    <div class="invalid-feedback">Please select a valid time.</div>
+                  </div>
+                  <div id="durationPriceInfo" class="mt-2 text-muted"></div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating">
+                    <select class="form-select" id="serviceType" name="serviceType" required>
+                      <option value="">Select Service</option>
+                      <option value="washDry">Wash and Dry</option>
+                      <option value="washTidy">Wash and Tidy</option>
+                      <option value="fullGroom">Full Groom</option>
+                      <option value="puppy">Puppy</option>
+                    </select>
+                    <label for="serviceType">Service Type <span class="text-danger">*</span></label>
+                    <div class="invalid-feedback">Please select a service.</div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="add-ons-container">
+                    <h6>Add-ons (Optional)</h6>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="deshedding" name="add_ons" value="deshedding">
+                      <label class="form-check-label" for="deshedding">Deshedding (15 min, Rs 200)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="specialShampoo" name="add_ons" value="specialShampoo">
+                      <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs 200)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="nailClip" name="add_ons" value="nailClip">
+                      <label class="form-check-label" for="nailClip">Nail Clip (Rs 200)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="analGland" name="add_ons" value="analGland">
+                      <label class="form-check-label" for="analGland">Anal Gland Care (Rs 200)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="teethBrushing" name="add_ons" value="teethBrushing">
+                      <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs 200)</label>
+                    </div>
+                    <small class="text-warning mt-2">Note: Flea shampoo + rinse will be applied if fleas are found during grooming to prevent spreading.</small>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-bold">Date <span class="text-danger">*</span></label>
-                <input type="date" class="form-control mb-3" id="bookingDate" name="date" required>
-                <div class="invalid-feedback">Please select a date.</div>
+              <div class="row mt-4">
+                <div class="col-6">
+                  <button type="button" class="btn btn-secondary w-100" id="prevStep3">Previous</button>
+                </div>
+                <div class="col-6">
+                  <button type="button" class="btn btn-success w-100" id="nextStep3">Next</button>
+                </div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-bold">Time <span class="text-danger">*</span></label>
-                <select class="form-select mb-3" id="bookingTime" name="time" required>
-                  <option value="">Select Time</option>
-                </select>
-                <div class="invalid-feedback">Please select a valid time (9 AM - 4 PM).</div>
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary" id="nextStep3">Next <i class="bi bi-arrow-right"></i></button>
-            <button type="button" class="btn btn-outline-secondary" id="prevStep3">Previous <i class="bi bi-arrow-left"></i></button>
+            </form>
           </div>
 
-          <div id="step4" class="step">
-            <h4 class="fw-bold text-primary mb-3">Confirmation</h4>
-            <div id="confirmationDetails" class="mb-3"></div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
-              <label class="form-check-label" for="terms">I agree to the <a href="#" target="_blank">Terms and Conditions</a> <span class="text-danger">*</span></label>
+          <!-- Step 4: Confirmation -->
+          <div class="step" id="step4" style="display: none;">
+            <h4 class="text-center mb-4">Step 4: Confirm Booking</h4>
+            <div id="confirmationDetails" class="mb-4"></div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="terms" required>
+              <label class="form-check-label" for="terms">I agree to the terms and conditions <span class="text-danger">*</span></label>
               <div class="invalid-feedback">You must agree to the terms and conditions.</div>
             </div>
-            <button type="submit" class="btn btn-success" id="confirmBooking">Confirm Booking <i class="bi bi-check-circle"></i></button>
-            <button type="button" class="btn btn-outline-secondary" id="prevStep4">Previous <i class="bi bi-arrow-left"></i></button>
+            <div class="row mt-4">
+              <div class="col-6">
+                <button type="button" class="btn btn-secondary w-100" id="prevStep4">Previous</button>
+              </div>
+              <div class="col-6">
+                <button type="submit" class="btn btn-success w-100" id="nextStep4" form="bookingForm">Confirm Booking</button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -253,6 +275,7 @@
     const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
     let petCount = 1;
     let step = 1;
+    const confirmButton = document.getElementById('nextStep4');
 
     // Show modal and set date range
     document.querySelector('.btn-outline-danger').addEventListener('click', function () {
@@ -338,39 +361,32 @@
       `;
       petCount = 1;
       document.querySelectorAll('.step-indicator').forEach(indicator => indicator.classList.remove('active'));
-      document.getElementById('durationInfo').textContent = '';
+      document.getElementById('durationPriceInfo').textContent = '';
       updateAddOnsVisibility();
     }
 
     // Step Navigation
     document.getElementById('nextStep1').addEventListener('click', function () {
-      console.log('Next Step 1 clicked');
       if (validateStep1()) {
-        console.log('Step 1 validated successfully');
         step = 2;
         document.getElementById('step1').classList.remove('active');
         document.getElementById('step2').classList.add('active');
         transitionSteps();
       } else {
-        console.log('Step 1 validation failed');
         document.getElementById('bookingForm').classList.add('was-validated');
       }
     });
 
     document.getElementById('nextStep2').addEventListener('click', function () {
-      console.log('Next Step 2 clicked');
       if (validateStep2()) {
-        console.log('Step 2 validated successfully');
         step = 3;
         document.getElementById('step2').classList.remove('active');
         document.getElementById('step3').classList.add('active');
         transitionSteps();
-        updateServiceDuration();
+        updateServiceDurationAndPrice();
       } else {
-        console.log('Step 2 validation failed');
         for (let i = 1; i <= petCount; i++) {
           if (!document.getElementById(`petWeight${i}`).value) {
-            console.log(`Invalid input for pet ${i}: weight missing`);
             document.getElementById(`petWeight${i}`).classList.add('is-invalid');
           }
         }
@@ -378,16 +394,14 @@
     });
 
     document.getElementById('nextStep3').addEventListener('click', function () {
-      console.log('Next Step 3 clicked');
       if (validateStep3()) {
-        console.log('Step 3 validated successfully');
         step = 4;
         document.getElementById('step3').classList.remove('active');
         document.getElementById('step4').classList.add('active');
         displayConfirmation();
+        checkTimeAvailability();
         transitionSteps();
       } else {
-        console.log('Step 3 validation failed');
         document.getElementById('bookingForm').classList.add('was-validated');
         const invalidFields = document.getElementById('bookingForm').querySelectorAll(':invalid');
         invalidFields.forEach(field => console.log(`Invalid field: ${field.id}`));
@@ -395,7 +409,6 @@
     });
 
     document.getElementById('prevStep2').addEventListener('click', function () {
-      console.log('Previous Step 2 clicked');
       step = 1;
       document.getElementById('step2').classList.remove('active');
       document.getElementById('step1').classList.add('active');
@@ -404,7 +417,6 @@
     });
 
     document.getElementById('prevStep3').addEventListener('click', function () {
-      console.log('Previous Step 3 clicked');
       step = 2;
       document.getElementById('step3').classList.remove('active');
       document.getElementById('step2').classList.add('active');
@@ -413,7 +425,6 @@
     });
 
     document.getElementById('prevStep4').addEventListener('click', function () {
-      console.log('Previous Step 4 clicked');
       step = 3;
       document.getElementById('step4').classList.remove('active');
       document.getElementById('step3').classList.add('active');
@@ -429,7 +440,6 @@
 
     // Add Another Pet
     document.getElementById('addPet').addEventListener('click', function () {
-      console.log('Add Pet clicked');
       petCount++;
       const petDiv = document.createElement('div');
       petDiv.className = 'pet-info mb-3 p-3 border rounded-3';
@@ -483,11 +493,11 @@
         serviceType.disabled = false;
         bookingTime.disabled = false;
       }
-      updateServiceDuration();
+      updateServiceDurationAndPrice();
     }
 
     // Update Service Duration and Price
-    function updateServiceDuration() {
+    function updateServiceDurationAndPrice() {
       const weight = parseFloat(document.getElementById(`petWeight1`).value) || 0;
       const size = weight < 5 ? 'XS' : weight <= 11 ? 'S' : weight <= 19 ? 'M' : weight <= 30 ? 'L' : 'Special';
       const durations = {
@@ -496,24 +506,32 @@
         fullGroom: { 'XS': '1.5 hr', 'S': '2 hr', 'M': '2.5 hr', 'L': '3.5 hr' },
         puppy: { 'XS': '1.5 hr', 'S': '1.5 hr', 'M': '1.5 hr', 'L': '1.5 hr' }
       };
-      const prices = {
+      const basePrices = {
         washDry: { 'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000 },
         washTidy: { 'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000 },
         fullGroom: { 'XS': 1500, 'S': 2000, 'M': 2500, 'L': 3500 },
         puppy: { 'XS': 1500, 'S': 1500, 'M': 1500, 'L': 1500 }
       };
-      let durationInfo = `Selected Size: ${size}<br>Price: Rs. ${prices[document.getElementById('serviceType').value || 'washDry'][size] || 0}`;
+      const addOnPrices = { deshedding: 200, specialShampoo: 200, nailClip: 200, analGland: 200, teethBrushing: 200 };
+      const service = document.getElementById('serviceType').value || 'washDry';
+      let totalPrice = basePrices[service][size] || 0;
+      let addOns = document.querySelectorAll('input[name="add_ons"]:checked');
+      addOns.forEach(addOn => totalPrice += addOnPrices[addOn.value] || 0);
+      let duration = durations[service][size] || 'N/A';
+      if (document.getElementById('deshedding').checked) {
+        const [time, unit] = duration.split(' ');
+        let minutes = unit === 'min' ? parseInt(time) : parseInt(time) * 60 + 15;
+        duration = `${Math.floor(minutes / 60) > 0 ? Math.floor(minutes / 60) + ' hr' : ''} ${minutes % 60} min`.trim();
+      }
       if (size === 'Special') {
-        durationInfo += '<br>Please contact the salon for weights above 30kg.';
+        document.getElementById('durationPriceInfo').innerHTML = 'Please contact the salon for weights above 30kg.';
         document.getElementById('serviceType').disabled = true;
         document.getElementById('bookingTime').disabled = true;
       } else {
+        document.getElementById('durationPriceInfo').innerHTML = `Estimated Duration: ${duration}<br>Estimated Price: Rs. ${totalPrice}`;
         document.getElementById('serviceType').disabled = false;
         document.getElementById('bookingTime').disabled = false;
-        const service = document.getElementById('serviceType').value || 'washDry';
-        durationInfo += `<br>Estimated Duration: ${durations[service][size] || 'N/A'}`;
       }
-      document.getElementById('durationInfo').innerHTML = durationInfo;
     }
 
     // Update Add-ons Visibility
@@ -526,6 +544,7 @@
         if (service === 'fullGroom' && addOn === 'nailClip') el.style.display = 'none';
         if ((service !== 'washDry' && service !== 'washTidy') && addOn === 'deshedding') el.style.display = 'none';
       });
+      updateServiceDurationAndPrice();
     }
 
     // Load Time Slots Dynamically
@@ -554,16 +573,21 @@
             puppy: { 'XS': 90, 'S': 90, 'M': 90, 'L': 90 }
           };
           const minDuration = durations[service][size] || 45;
-          data.time_slots.forEach(time => {
-            const [hours, minutes] = time.time.split(':').map(Number);
-            const totalMinutes = hours * 60 + minutes;
-            if (totalMinutes + minDuration <= 16 * 60) {
-              const option = document.createElement('option');
-              option.value = time.time;
-              option.textContent = time.display;
-              timeSelect.appendChild(option);
-            }
-          });
+          if (size === 'Special') {
+            timeSelect.disabled = true;
+          } else {
+            timeSelect.disabled = false;
+            data.time_slots.forEach(time => {
+              const [hours, minutes] = time.time.split(':').map(Number);
+              const totalMinutes = hours * 60 + minutes;
+              if (totalMinutes + minDuration <= 16 * 60) {
+                const option = document.createElement('option');
+                option.value = time.time;
+                option.textContent = time.display;
+                timeSelect.appendChild(option);
+              }
+            });
+          }
         } else {
           console.error('Failed to load time slots:', data.message);
           document.getElementById('bookingTime').innerHTML = '<option value="">No slots available</option>';
@@ -580,30 +604,85 @@
       const date = e.target.value;
       if (date) {
         loadTimeSlots(date);
+        checkTimeAvailability();
       }
     });
+
+    // Time Change Handler
+    document.getElementById('bookingTime').addEventListener('change', function () {
+      checkTimeAvailability();
+    });
+
+    // Check Time Availability
+    function checkTimeAvailability() {
+      const date = document.getElementById('bookingDate').value;
+      const time = document.getElementById('bookingTime').value;
+      const serviceType = document.getElementById('serviceType').value || 'washDry';
+      const weight = parseFloat(document.getElementById('petWeight1').value) || 0;
+      const size = weight < 5 ? 'XS' : weight <= 11 ? 'S' : weight <= 19 ? 'M' : weight <= 30 ? 'L' : 'Special';
+      const durations = {
+        washDry: { 'XS': 45, 'S': 60, 'M': 90, 'L': 120 },
+        washTidy: { 'XS': 45, 'S': 75, 'M': 90, 'L': 120 },
+        fullGroom: { 'XS': 90, 'S': 120, 'M': 150, 'L': 210 },
+        puppy: { 'XS': 90, 'S': 90, 'M': 90, 'L': 90 }
+      };
+      const duration = durations[serviceType][size] || 45;
+      const totalDuration = document.getElementById('deshedding').checked ? duration + 15 : duration;
+
+      if (date && time && size !== 'Special') {
+        const [hours, minutes] = time.split(':').map(Number);
+        const startMinutes = hours * 60 + minutes;
+        const endMinutes = startMinutes + totalDuration;
+
+        fetch(`/check-booking-availability/?date=${date}&start=${time}&duration=${totalDuration}`, {
+          method: 'GET',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            confirmButton.disabled = data.is_overlapping;
+            if (data.is_overlapping) {
+              confirmButton.classList.add('btn-danger');
+              confirmButton.classList.remove('btn-success');
+              confirmButton.textContent = 'Time Slot Unavailable';
+            } else {
+              confirmButton.classList.remove('btn-danger');
+              confirmButton.classList.add('btn-success');
+              confirmButton.textContent = 'Confirm Booking';
+            }
+          } else {
+            console.error('Availability check failed:', data.message);
+            confirmButton.disabled = true;
+          }
+        })
+        .catch(error => {
+          console.error('Error checking availability:', error);
+          confirmButton.disabled = true;
+        });
+      } else {
+        confirmButton.disabled = true;
+      }
+    }
 
     // Form Validation
     function validateStep1() {
       const form = document.getElementById('bookingForm');
       const step1Inputs = document.querySelectorAll('#step1 input[required]');
       let isValid = true;
-
-      console.log('Validating Step 1:');
       step1Inputs.forEach(input => {
         if (!input.value.trim()) {
-          console.log(`Invalid field: ${input.id} - Value is empty`);
           input.classList.add('is-invalid');
           isValid = false;
         } else if (input.id === 'contactNo' && !/^\+977[0-9]{10}$/.test(input.value)) {
-          console.log(`Invalid field: ${input.id} - Value "${input.value}" does not match +977 followed by 10 digits`);
           input.classList.add('is-invalid');
           isValid = false;
         } else {
           input.classList.remove('is-invalid');
         }
       });
-
       return isValid;
     }
 
@@ -614,7 +693,6 @@
         if (!weight.value) {
           valid = false;
           weight.classList.add('is-invalid');
-          console.log(`Validation failed for pet ${i}: weight missing`);
         } else {
           weight.classList.remove('is-invalid');
         }
@@ -628,23 +706,18 @@
       const bookingTime = document.getElementById('bookingTime');
       let isValid = true;
       let isValidTime = false;
-
       if (!serviceType.value || serviceType.value === '') {
         serviceType.classList.add('is-invalid');
-        console.log('Invalid field: serviceType - Value is empty');
         isValid = false;
       } else {
         serviceType.classList.remove('is-invalid');
       }
-
       if (!bookingDate.value || bookingDate.value === '') {
         bookingDate.classList.add('is-invalid');
-        console.log('Invalid field: bookingDate - Value is empty');
         isValid = false;
       } else {
         bookingDate.classList.remove('is-invalid');
       }
-
       if (bookingTime.value && bookingTime.value !== 'Select Time' && bookingTime.value !== 'Error loading slots' && bookingTime.value !== 'No slots available') {
         const [timePart, period] = bookingTime.value.split(' ');
         let [hours, minutes] = timePart.split(':').map(Number);
@@ -655,13 +728,10 @@
       }
       if (!bookingTime.value || !isValidTime) {
         bookingTime.classList.add('is-invalid');
-        console.log('Invalid field: bookingTime - Invalid time');
         isValid = false;
       } else {
         bookingTime.classList.remove('is-invalid');
       }
-
-      console.log('Validation result for Step 3 - Form validity:', isValid, 'Time validity:', isValidTime);
       return isValid && isValidTime;
     }
 
@@ -685,6 +755,20 @@
       for (let i = 1; i <= petCount; i++) {
         details += `<li class="list-group-item">Pet ${i}: Name: ${formData.get(`petName${i}`) || ''}, Age: ${formData.get(`petAge${i}`) || ''}, Weight: ${formData.get(`petWeight${i}`) || ''}kg, Note: ${formData.get(`petNote${i}`) || ''}</li>`;
       }
+      const weight = parseFloat(document.getElementById('petWeight1').value) || 0;
+      const size = weight < 5 ? 'XS' : weight <= 11 ? 'S' : weight <= 19 ? 'M' : weight <= 30 ? 'L' : 'Special';
+      const service = document.getElementById('serviceType').value || 'washDry';
+      const basePrices = {
+        washDry: { 'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000 },
+        washTidy: { 'XS': 500, 'S': 1000, 'M': 1500, 'L': 2000 },
+        fullGroom: { 'XS': 1500, 'S': 2000, 'M': 2500, 'L': 3500 },
+        puppy: { 'XS': 1500, 'S': 1500, 'M': 1500, 'L': 1500 }
+      };
+      const addOnPrices = { deshedding: 200, specialShampoo: 200, nailClip: 200, analGland: 200, teethBrushing: 200 };
+      let totalPrice = basePrices[service][size] || 0;
+      const addOns = formData.getAll('add_ons');
+      addOns.forEach(addOn => totalPrice += addOnPrices[addOn] || 0);
+      details += `<li class="list-group-item"><strong>Total Price: Rs. ${totalPrice}</strong></li>`;
       details += '</ul>';
       document.getElementById('confirmationDetails').innerHTML = details;
     }
@@ -694,7 +778,6 @@
       const terms = document.getElementById('terms');
       if (!terms.checked) {
         terms.classList.add('is-invalid');
-        console.log('Invalid field: terms - Not checked');
         return;
       } else {
         terms.classList.remove('is-invalid');
@@ -703,12 +786,13 @@
       const formData = new FormData(this);
       const data = {};
       for (let [key, value] of formData.entries()) data[key] = value;
+      data.service_type = document.getElementById('serviceType').value; // Explicitly add service_type
       data.pets = [];
       for (let i = 1; i <= petCount; i++) {
         data.pets.push({
           name: data[`petName${i}`] || '',
           age: data[`petAge${i}`] || '',
-          weight: data[`petWeight${i}`] || '',
+          weight: parseFloat(data[`petWeight${i}`]) || 0,
           note: data[`petNote${i}`] || ''
         });
         delete data[`petName${i}`];
@@ -750,9 +834,18 @@
       .catch(error => console.error('Error:', error));
     });
 
-    document.querySelectorAll('#petWeight1, #petWeight2, #petWeight3').forEach(weight => weight.addEventListener('input', checkWeight));
-    document.getElementById('serviceType').addEventListener('change', updateAddOnsVisibility);
-    document.getElementById('petWeight1').addEventListener('input', updateServiceDuration);
+    // Event listeners for dynamic updates
+    document.querySelectorAll('input[name="add_ons"]').forEach(addOn => {
+      addOn.addEventListener('change', updateServiceDurationAndPrice);
+    });
+    document.getElementById('serviceType').addEventListener('change', function () {
+      updateAddOnsVisibility();
+      updateServiceDurationAndPrice();
+    });
+    document.getElementById('petWeight1').addEventListener('input', function () {
+      loadTimeSlots(document.getElementById('bookingDate').value);
+      updateServiceDurationAndPrice();
+    });
     document.getElementById('bookingDate').addEventListener('change', function (e) {
       const date = e.target.value;
       if (date) {

@@ -17,13 +17,10 @@ urlpatterns = [
     path('regular_bathing/', views.regular_bathing, name='regular_bathing'),
     path('dog/', views.dog, name='dog'),
     path('cat/', views.cat, name='cat'),
-    path('regular_bathing/', views.regular_bathing, name='regular_bathing'),
     path('get-time-slots/', views.get_time_slots, name='get_time_slots'),
     path('book-appointment/', views.book_appointment, name='book_appointment'),
     path('my_bookings/', views.my_bookings, name='my_bookings'),
-    path('update-booking-status/', views.update_booking_status, name='update_booking_status'),   
-    path('get-user-profile/', views.get_user_profile, name='get_user_profile'),       
-
-
-
+    path('update-booking-status/', views.update_booking_status, name='update_booking_status'),
+    path('get-user-profile/', views.get_user_profile, name='get_user_profile'),
+    path('check-booking-availability/', views.check_booking_availability, name='check_booking_availability'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
