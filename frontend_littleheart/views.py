@@ -67,6 +67,11 @@ def register(request):
         form = RegistrationForm()
     return render(request, 'frontend_littleheart/register.html', {'form': form})
 
+def logout(request):
+    auth_logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('home')
+
 def about(request):
     return render(request, 'frontend_littleheart/about.html')
 
