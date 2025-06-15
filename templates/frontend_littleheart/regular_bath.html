@@ -166,75 +166,73 @@
 
           <!-- Step 3: Date, Time, and Service Selection -->
           <div class="step" id="step3" style="display: none;">
-            <h4 class="text-center mb-4">Step 3: Select Date, Time & Service</h4>
-            <form id="bookingForm" novalidate>
-              <div class="row g-3">
-                <div class="col-12">
-                  <div class="form-floating">
-                    <input type="date" class="form-control" id="bookingDate" name="date" required>
-                    <label for="bookingDate">Select Date <span class="text-danger">*</span></label>
-                    <div class="invalid-feedback">Please select a date.</div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="form-floating">
-                    <select class="form-select" id="bookingTime" name="time" required>
-                      <option value="">Select Time</option>
-                    </select>
-                    <label for="bookingTime">Select Time <span class="text-danger">*</span></label>
-                    <div class="invalid-feedback">Please select a valid time.</div>
-                  </div>
-                  <div id="durationPriceInfo" class="mt-2 text-muted"></div>
-                </div>
-                <div class="col-12">
-                  <div class="form-floating">
-                    <select class="form-select" id="serviceType" name="serviceType" required>
-                      <option value="">Select Service</option>
-                      <option value="washDry">Wash and Dry</option>
-                      <option value="washTidy">Wash and Tidy</option>
-                      <option value="fullGroom">Full Groom</option>
-                      <option value="puppy">Puppy</option>
-                    </select>
-                    <label for="serviceType">Service Type <span class="text-danger">*</span></label>
-                    <div class="invalid-feedback">Please select a service.</div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="add-ons-container">
-                    <h6>Add-ons (Optional)</h6>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="deshedding" name="add_ons" value="deshedding">
-                      <label class="form-check-label" for="deshedding">Deshedding (15 min, Rs 200)</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="specialShampoo" name="add_ons" value="specialShampoo">
-                      <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs 200)</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="nailClip" name="add_ons" value="nailClip">
-                      <label class="form-check-label" for="nailClip">Nail Clip (Rs 200)</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="analGland" name="add_ons" value="analGland">
-                      <label class="form-check-label" for="analGland">Anal Gland Care (Rs 200)</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="teethBrushing" name="add_ons" value="teethBrushing">
-                      <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs 200)</label>
-                    </div>
-                    <small class="text-warning mt-2">Note: Flea shampoo + rinse will be applied if fleas are found during grooming to prevent spreading.</small>
-                  </div>
+            <h4 class="fw-bold text-primary mb-3">Step 3: Booking Details</h4>
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="form-floating">
+                  <select class="form-select" id="serviceType" name="serviceType" required>
+                    <option value="">Select Service</option>
+                    <option value="washDry">Wash and Dry</option>
+                    <option value="washTidy">Wash and Tidy</option>
+                    <option value="fullGroom">Full Groom</option>
+                    <option value="puppy">Puppy</option>
+                  </select>
+                  <label for="serviceType">Service Type <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please select a service.</div>
                 </div>
               </div>
-              <div class="row mt-4">
-                <div class="col-6">
-                  <button type="button" class="btn btn-secondary w-100" id="prevStep3">Previous</button>
-                </div>
-                <div class="col-6">
-                  <button type="button" class="btn btn-success w-100" id="nextStep3">Next</button>
+              <div class="col-12">
+                <div class="add-ons-container">
+                  <h6>Add-ons (Optional)</h6>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="deshedding" name="add_ons" value="deshedding">
+                    <label class="form-check-label" for="deshedding">Deshedding (15 min, Rs 200)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="specialShampoo" name="add_ons" value="specialShampoo">
+                    <label class="form-check-label" for="specialShampoo">Special Shampoo (Rs 200)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="nailClip" name="add_ons" value="nailClip">
+                    <label class="form-check-label" for="nailClip">Nail Clip (Rs 200)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="analGland" name="add_ons" value="analGland">
+                    <label class="form-check-label" for="analGland">Anal Gland Care (Rs 200)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="teethBrushing" name="add_ons" value="teethBrushing">
+                    <label class="form-check-label" for="teethBrushing">Teeth Brushing (Rs 200)</label>
+                  </div>
+                  <small class="text-warning mt-2">Note: Flea shampoo + rinse will be applied if fleas are found during grooming to prevent spreading.</small>
                 </div>
               </div>
-            </form>
+              <div class="col-12">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="bookingDate" name="date" required>
+                  <label for="bookingDate">Select Date <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please select a date.</div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <select class="form-select" id="bookingTime" name="time" required>
+                    <option value="">Select Time</option>
+                  </select>
+                  <label for="bookingTime">Select Time <span class="text-danger">*</span></label>
+                  <div class="invalid-feedback">Please select a valid time.</div>
+                </div>
+                <div id="durationPriceInfo" class="mt-2 text-muted"></div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-6">
+                <button type="button" class="btn btn-secondary w-100" id="prevStep3">Previous</button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-success w-100" id="nextStep3">Next</button>
+              </div>
+            </div>
           </div>
 
           <!-- Step 4: Confirmation -->
