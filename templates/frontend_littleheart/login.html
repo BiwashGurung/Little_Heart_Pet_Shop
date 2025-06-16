@@ -105,13 +105,13 @@
         <h6 class="text-uppercase mb-4">Little Heart Pet Shop</h6>
         <form method="POST">
           {% csrf_token %}
-          {% if messages %}
+          {% comment %} {% if messages %}
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }} mb-3" role="alert">
                 {{ message }}
               </div>
             {% endfor %}
-          {% endif %}
+          {% endif %} {% endcomment %}
           <div class="mb-3">
             <input type="text" class="form-control" name="username" placeholder="Dexygurung" value="{{ request.POST.username|default:'' }}" required>
           </div>
