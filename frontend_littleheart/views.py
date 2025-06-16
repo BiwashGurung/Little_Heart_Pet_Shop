@@ -36,7 +36,7 @@ def login(request):
             else:
                 request.session.set_expiry(0)  # Session ends on browser close
             messages.success(request, "Login successful!")
-            return redirect('home')
+            return redirect(request.GET.get('next', 'home'))
         else:
             messages.error(request, "Invalid username or password.")
     return render(request, 'frontend_littleheart/login.html')
