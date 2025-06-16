@@ -10,24 +10,23 @@
     .navbar {
         background-color: #E6F0E3 !important;
         padding: 1rem 1rem;
-        position: sticky; /* Ensure sticky behavior */
+        position: sticky;
         top: 0;
-        z-index: 1000; /* Ensure it stays above other content */
-        transition: padding 0.3s ease, background-color 0.3s ease; /* Smooth transition for padding and background */
+        z-index: 1000;
+        transition: padding 0.3s ease, background-color 0.3s ease;
     }
     .navbar.scrolled {
-        padding: 0.5rem 1rem; /* Reduce padding when scrolled */
-        background-color: #d3e0d1; /* Slightly darker on scroll for contrast */
+        padding: 0.5rem 1rem;
+        background-color: #d3e0d1;
     }
     .navbar-brand img {
-        height: 50px; /* Reduced for better mobile fit */
-        margin-left: 0; /* Removed to align properly */
-        transition: height 0.3s ease; /* Smooth logo size transition */
+        height: 50px;
+        margin-left: 0;
+        transition: height 0.3s ease;
     }
     .navbar.scrolled .navbar-brand img {
-        height: 40px; /* Smaller logo when scrolled */
+        height: 40px;
     }
-  
     .navbar-nav {
         margin-left: auto;
         display: flex;
@@ -44,7 +43,7 @@
         color: #555 !important;
     }
     .nav-link.active {
-        color: #ff6f61 !important; /* Highlight active link */
+        color: #ff6f61 !important;
         font-weight: 600;
         background-color: #d3e0d1;
         border-radius: 0.25rem;
@@ -56,6 +55,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         padding: 0.5rem 0;
         animation: fadeIn 0.2s ease-in-out;
+        z-index: 1100; /* Ensure it appears above other content */
     }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }
@@ -71,7 +71,6 @@
         background-color: #d3e0d1;
         color: #333;
     }
-    /* Style for the icons */
     .navbar-icons {
         display: flex;
         align-items: center;
@@ -95,6 +94,7 @@
         justify-content: center;
         text-align: center;
         margin-bottom: 2rem;
+        position: relative;
     }
     .hero-section h1 {
         font-size: 3rem;
@@ -120,43 +120,65 @@
         padding: 2rem 0;
     }
 
-    /* Mobile Responsiveness */
+    /* Mobile Responsiveness Enhancements */
     @media (max-width: 991px) {
         .navbar-brand img {
-            height: 40px; /* Smaller logo on mobile */
+            height: 40px;
         }
         .navbar-nav {
             margin-left: 0;
             flex-direction: column;
             width: 100%;
+            background-color: #E6F0E3; /* Background for collapsed menu */
+            padding: 1rem 0;
         }
         .nav-link {
             padding: 0.75rem 1rem;
             margin: 0;
+            text-align: left;
+            border-bottom: 1px solid #d3e0d1; /* Separator between items */
         }
         .nav-link.active {
-            background-color: #d3e0d1; /* Maintain active style on mobile */
+            background-color: #d3e0d1;
         }
         .navbar-icons {
             margin-left: 0;
-            justify-content: flex-end;
+            justify-content: flex-start;
             width: 100%;
-            padding: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background-color: #E6F0E3;
+            border-top: 1px solid #d3e0d1; /* Separator from nav links */
+        }
+        .navbar-icons .dropdown {
+            width: 100%;
         }
         .dropdown-menu {
             position: static;
             float: none;
             width: 100%;
             box-shadow: none;
+            border: none;
+            border-radius: 0;
+            background-color: #d3e0d1; /* Slightly darker for contrast */
         }
         .dropdown-item {
             padding: 0.75rem 1.5rem;
+            text-align: left;
         }
         .navbar {
-            padding: 0.5rem 1rem; /* Reduced padding on mobile */
+            padding: 0.5rem 1rem;
         }
         .navbar.scrolled {
-            padding: 0.25rem 1rem; /* Further reduced on mobile scroll */
+            padding: 0.25rem 1rem;
+        }
+        .navbar-collapse {
+            padding: 0; /* Remove default padding for cleaner look */
+        }
+        .navbar-toggler {
+            padding: 0.25rem 0.75rem;
+            font-size: 1.25rem;
+            border: 1px solid #d3e0d1;
+            border-radius: 0.25rem;
         }
     }
 </style>
@@ -178,32 +200,18 @@
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/' or request.path == '/home/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                 </li>
-                {% comment %} <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="shopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Shop
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="shopDropdown">
-                        <li><a class="nav-link {% if request.path == '/shop/' or request.path == '/cat/' or request.path == '/dog/' %}active{% endif %}" href="">All Products</a></li>
-                        <li><a class="nav-link {% if request.path == '/cat/' %}active{% endif %}" href="{% url 'cat' %}">Cats</a></li>
-                        <li><a class="nav-link {% if request.path == '/dog/' %}active{% endif %}" href="{% url 'dog' %}">Dogs</a></li>
-                    </ul>
-                </li> {% endcomment %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/grooming/' %}active{% endif %}" href="{% url 'grooming' %}">Grooming</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">About Us</a>
                 </li>
-                {% comment %} <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/blog_list/' %}active{% endif %}" href="{% url 'blog_list' %}">Blog</a>
-                </li> {% endcomment %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="{% url 'contact' %}">Contact Us</a>
                 </li>
             </ul>
             <!-- Right Icons and User Dropdown -->
             <div class="navbar-icons">
-                {% comment %} <a href=""><i class="bi bi-search"></i></a> {% endcomment %}
                 <div class="dropdown">
                     {% if user.is_authenticated %}
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -222,7 +230,6 @@
                         </ul>
                     {% endif %}
                 </div>
-                {% comment %} <a href=""><i class="bi bi-cart"></i></a> {% endcomment %}
             </div>
         </div>
     </div>
