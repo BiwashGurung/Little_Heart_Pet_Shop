@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'LittleHeart',  # Your app
     'frontend_littleheart',  # Your frontend app
 ]
+TIME_ZONE = 'Asia/Kathmandu'  # Matches +0545
 
  
 
