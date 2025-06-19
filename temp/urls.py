@@ -23,5 +23,5 @@ urlpatterns = [
     path('my_bookings/', views.my_bookings, name='my_bookings'),
     path('update-booking-status/', views.update_booking_status, name='update_booking_status'),
     path('get-user-profile/', views.get_user_profile, name='get_user_profile'),
-
+    path('check-booking-availability/', views.check_booking_availability, name='check_booking_availability'),  # Added with trailing slash
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
