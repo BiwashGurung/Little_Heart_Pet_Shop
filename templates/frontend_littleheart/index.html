@@ -107,7 +107,7 @@
 
     .services-section h2 {
       font-weight: bold;
-      color: #e25120; /* orange color */
+      color: #e25120; 
       margin-bottom: 40px;
     }
 
@@ -144,6 +144,8 @@
    
     .about-section {
       padding: 3rem 1rem;
+      margin-top: -20px;
+      margin-bottom: -55px;
     }
 
     .about-image {
@@ -180,14 +182,44 @@
     @media (max-width: 767.98px) {
       .about-card {
         margin-left: 0;
-        margin-top: 1rem;
+      
         box-shadow: 6px 6px 0 #704b3e;
         height: auto;
         max-width: 100%;
       }
+      .about-image {
+        display: none; 
+      }
+    }
+
+   
+     .testimonial-card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      height: 100%;
+      background-color:rgb(252, 238, 230);
+    }
+    .testimonial-card:hover {
+      transform: scale(1.05);
+    }
+    .testimonial-img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .star-rating {
+      color: #FFD700;
+      font-size: 1.6rem;
+    }
+    .carousel-inner {
+      padding: 30px 0;
     }
 </style>
-
+<!-- Hero Section -->
 <section class="hero-section d-flex justify-content-center">
   <div class="text-center hero-text">
     <h1>Find the Best for Your Furry Friends!</h1>
@@ -259,11 +291,6 @@
   </div>
 </section>
 
-
-
-
-
-
 <div class="opening-hours-section">
   <div class="opening-hours-img"></div>
   <div class="opening-hours-text">
@@ -278,6 +305,97 @@
     </div>
   </div>
 </div>
+
+<section style="background-color: #fceee6; margin-top: 25px">
+<div class="container text-center py-5">
+  <h3 class="mb-4 text-danger fw-bold">What Pet Parents Say</h3>
+
+  <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+    <div class="carousel-inner">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6">
+            <div class="testimonial-card d-flex align-items-start gap-3" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+              <img src="https://randomuser.me/api/portraits/women/1.jpg" class="testimonial-img" alt="User">
+              <div class="text-start">
+                <div class="star-rating mb-1">★★★★★</div>
+                <h6 class="fw-bold text-danger mb-1">Amazing!</h6>
+                <p class="mb-0">I couldn’t be happier with WoofWhisk! Their products are top-notch—my pup absolutely loves the new toys and treats we got. The quality is fantastic, and delivery was super fast. It’s our go-to shop for all things dog-related!</p>
+                <small class="text-muted">Sarah, Happy Dog Owner</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="testimonial-card d-flex align-items-start gap-3" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+              <img src="https://randomuser.me/api/portraits/men/2.jpg" class="testimonial-img" alt="User">
+              <div class="text-start">
+                <div class="star-rating mb-1">★★★★★</div>
+                <h6 class="fw-bold text-danger mb-1">Highly Recommended!</h6>
+                <p class="mb-0">The scratching post is perfect. Great quality and support team.</p>
+                <small class="text-muted">Alex, Proud Cat Dad</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6">
+            <div class="testimonial-card d-flex align-items-start gap-3" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+              <img src="https://randomuser.me/api/portraits/women/3.jpg" class="testimonial-img" alt="User">
+              <div class="text-start">
+                <div class="star-rating mb-1">★★★★☆</div>
+                <h6 class="fw-bold text-danger mb-1">Lovely Service!</h6>
+                <p class="mb-0">Toys are adorable, and delivery was quick. Totally worth the price!</p>
+                <small class="text-muted">Mia, Pet Mom</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="testimonial-card d-flex align-items-start gap-3" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+              <img src="https://randomuser.me/api/portraits/men/4.jpg" class="testimonial-img" alt="User">
+              <div class="text-start">
+                <div class="star-rating mb-1">★★★★★</div>
+                <h6 class="fw-bold text-danger mb-1">Outstanding!</h6>
+                <p class="mb-0">My husky loves the grooming kit. They know pets well!</p>
+                <small class="text-muted">Daniel, Dog Lover</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="carousel-item">
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6">
+            <div class="testimonial-card d-flex align-items-start gap-3" onmouseover="pauseCarousel()" onmouseout="resumeCarousel()">
+              <img src="https://randomuser.me/api/portraits/women/5.jpg" class="testimonial-img" alt="User">
+              <div class="text-start">
+                <div class="star-rating mb-1">★★★★★</div>
+                <h6 class="fw-bold text-danger mb-1">Top Quality!</h6>
+                <p class="mb-0">Loved the cat litter and packaging. Will definitely buy again.</p>
+                <small class="text-muted">Emily, Cat Enthusiast</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button class="btn btn-outline-danger mt-4">All Testimonials</button>
+</div>
+</section>
+
+
+
+
 
 
 <section class="container py-5 text-center">
@@ -320,5 +438,18 @@
 <!-- Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const carousel = document.querySelector('#testimonialCarousel');
+  let bsCarousel = bootstrap.Carousel.getInstance(carousel) || new bootstrap.Carousel(carousel);
+
+  function pauseCarousel() {
+    bsCarousel.pause();
+  }
+
+  function resumeCarousel() {
+    bsCarousel.cycle();
+  }
+</script>
 
 {% endblock content %}
