@@ -12,9 +12,10 @@
   .hero-section {
     background: url('{% static "Images/dog-1.png" %}') center center/cover no-repeat;
     color: #fff;
-    height: 80vh;
+    height: 90vh;
     display: flex;
     align-items: center;
+    margin-bottom: -40px;
   }
   .hero-text h1 {
     font-weight: 700;
@@ -97,6 +98,48 @@
     margin-right: 6px;
     color: #333;
   }
+
+
+  .services-section {
+      padding: 60px 15px;
+      text-align: center;
+    }
+
+    .services-section h2 {
+      font-weight: bold;
+      color: #e25120; /* orange color */
+      margin-bottom: 40px;
+    }
+
+    .service-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 25px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      height: 100%;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .service-card h5 {
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .service-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .btn-outline-dark {
+      border-radius: 25px;
+      padding: 5px 20px;
+      margin-top: 15px;
+      font-weight: 500;
+    }
 </style>
 
 <section class="hero-section d-flex justify-content-center">
@@ -106,6 +149,42 @@
     <a href="#" class="btn btn-outline-light">Shop Now</a>
   </div>
 </section>
+<section class="services-section" style="background-color: #fceee6;">
+  <div class="container">
+    <h2>Our Services</h2>
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="service-card">
+          <h5>Wash & Dry</h5>
+          <p>A gentle bath and thorough blow-dry to keep your pet clean and happy.</p>
+          <button class="btn btn-outline-dark">Book Now</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="service-card">
+          <h5>Full Groom</h5>
+          <p>Complete grooming including haircut, nail trim, and ear cleaning.</p>
+          <button class="btn btn-outline-dark">Book Now</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="service-card">
+          <h5>Wash & Tidy</h5>
+          <p>A gentle bath followed by light trimming to keep your pet neat, clean, and comfortable.</p>
+          <button class="btn btn-outline-dark">Book Now</button>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="service-card">
+          <h5>De-shedding Treatment</h5>
+          <p>Reduce shedding and keep your pet’s coat healthy and shiny.</p>
+          <button class="btn btn-outline-dark">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="py-5 bg-light text-center">
   <div class="container">
