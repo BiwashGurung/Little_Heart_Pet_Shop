@@ -2,144 +2,132 @@
 {% block content %} 
 {% load static %}
 
-
-<!-- Hero Section -->
-<div class="text-center">
-  <img src="{% static 'images/groom-1.png' %}" alt="Grooming Hero" class="img-fluid w-100">
-</div>
-
-<!-- Services Overview -->
-<section class="py-5 bg-light text-center">
+<section class="py-5 bg-white text-center">
   <div class="container">
-    <h2 class="fw-bold text-danger mb-4">Comprehensive Grooming Services<br>Available for All Breeds of Dogs and Cats</h2>
-    <div class="row align-items-center">
+    <!-- Top Image -->
+    <div class="text-center mb-4">
+      <img src="{% static 'images/golden-comb.png' %}" alt="Grooming Dog" class="img-fluid rounded" style="max-height: 300px;">
+    </div>
+
+    <!-- Intro Text -->
+    <div class="mb-5 px-4 py-3" style="background-color: #FFF5F0;">
+      <p class="text-dark fst-italic mb-0" style="font-size: 15px;">
+        At Little Heart Pet Shop, every grooming session is one-on-one—calm, caring, and tailored to your pet’s needs.
+        Whether it’s a quick tidy-up or a full makeover, I use gentle techniques and professional tools to keep your pet
+        looking and feeling their best.
+      </p>
+    </div>
+
+    <!-- Grooming Services -->
+    <h4 class="fw-bold text-danger mb-4" style="font-size: 22px;">Our Grooming Services</h4>
+    <div class="row g-4 justify-content-center">
+      <!-- Card 1 -->
       <div class="col-md-4">
-        <h6 class="text-danger fw-bold">Puppy &<br>Kitten Bath</h6>
-        <p class="small">A gentle grooming session specially designed for young pets, includes a double bath, conditioning treatment, soft towel and dryer blow dry, light combing and brushing, ear and eye cleaning, and nail clipping.</p>
-        <h6 class="text-danger fw-bold mt-3">Bath Options –<br>Regular, Oil Massage & Medicated</h6>
-        <p class="small">Comprehensive grooming for your pet’s comfort and hygiene. Includes a double bath, conditioning, blow dry with towel and dryer, combing and brushing, hygiene cleaning, hair trimming and tidy-up, nail clipping or grinding, paw pad trimming and shaving, ear and eye cleaning, and a refreshing cologne spray.</p>
+        <div class="card shadow-sm border-0 rounded text-center px-3 py-4" style="background-color: #f9a64d33;">
+          <img src="{% static 'images/wash-icon.png' %}" alt="Wash & Dry" style="height: 60px;">
+          <h5 class="fw-bold mt-3 text-dark">Wash & Dry</h5>
+          <p class="text-muted mb-2" style="font-size: 13px;">Small: Rs. 850 | Medium: Rs. 1000 | Large: Rs. 1500</p>
+          <ul class="list-unstyled text-start small mx-auto" style="max-width: 180px;">
+            <li>✔ Warm Bath</li>
+            <li>✔ Blow Dry</li>
+            <li>✔ Cologne</li>
+            <li>✔ Brush & Comb</li>
+          </ul>
+        </div>
       </div>
+
+      <!-- Card 2 -->
       <div class="col-md-4">
-        <img src="{% static 'images/groom-2.png' %}" alt="Dog and Cat" class="img-fluid rounded">
+        <div class="card shadow-sm border-0 rounded text-center px-3 py-4" style="background-color: #f9a64d33;">
+          <img src="{% static 'images/tidy-icon.png' %}" alt="Wash & Tidy" style="height: 60px;">
+          <h5 class="fw-bold mt-3 text-dark">Wash & Tidy</h5>
+          <p class="text-muted mb-2" style="font-size: 13px;">Small: Rs. 950 | Medium: Rs. 1200 | Large: Rs. 1800</p>
+          <ul class="list-unstyled text-start small mx-auto" style="max-width: 180px;">
+            <li>✔ Bath & Dry</li>
+            <li>✔ Brush & Comb</li>
+            <li>✔ Nail Clipping</li>
+            <li>✔ Ear Cleaning</li>
+          </ul>
+        </div>
       </div>
+
+      <!-- Card 3 -->
       <div class="col-md-4">
-        <h6 class="text-danger fw-bold">Regular bath</h6>
-        <p class="small">Perfect for maintaining your pet’s coat and cleanliness. Features a double bath, conditioning, towel and dryer blow dry, thorough combing and brushing, hygiene cleaning, hair trimming and tidy-up, nail clipping or grinding, paw pad care, ear and eye cleaning, and cologne spray.</p>
-        <h6 class="text-danger fw-bold mt-3">Medicated bath</h6>
-        <p class="small">Ideal for pets with sensitive skin or medical needs. Provides a double bath using medicated shampoo, drying with towel and hot/cold air dryer, followed by brushing, hair trimming, nail clipping, paw pad trimming and shaving, and ear and eye cleaning.</p>
+        <div class="card shadow-sm border-0 rounded text-center px-3 py-4" style="background-color: #f9a64d33;">
+          <img src="{% static 'images/full-groom-icon.png' %}" alt="Full Groom" style="height: 60px;">
+          <h5 class="fw-bold mt-3 text-dark">Full Groom</h5>
+          <p class="text-muted mb-2" style="font-size: 13px;">Small: Rs. 950 | Medium: Rs. 1300 | Large: Rs. 1900</p>
+          <ul class="list-unstyled text-start small mx-auto" style="max-width: 180px;">
+            <li>✔ Bath & Dry</li>
+            <li>✔ Full Haircut</li>
+            <li>✔ Nail Care</li>
+            <li>✔ Ear Care</li>
+          </ul>
+        </div>
       </div>
     </div>
-    <a href="{% url 'regular_bathing' %}" class="btn btn-outline-danger mt-4">Book Now</a>
-  </div>
-</section>
 
-<!-- Banner -->
-<section class="text-white text-center d-flex align-items-center" style="background: url('{% static 'images/groom-3.png' %}') no-repeat center center/cover; min-height: 60vh;">
-  <div class="container py-5">
-    <h2 class="fw-bold display-5">Premium Grooming Services<br>for Your Furry Companions</h2>
-  </div>
-</section>
+    <!-- Additional Services -->
+    <div class="mt-5 px-4 py-4 rounded" style="background-color: #FFF5F0;">
+      <h4 class="fw-bold text-danger mb-3">Additional Services</h4>
+      <ul class="list-unstyled text-start mx-auto" style="max-width: 600px; font-size: 14px;">
+        <li><span class="text-success fw-bold">✔ De-shedding Treatment</span> – Removes loose undercoat for healthy skin</li>
+        <li><span class="text-success fw-bold">✔ Anal Gland Expression</span> – Safe, hygienic expression service</li>
+        <li><span class="text-success fw-bold">✔ Teeth Brushing</span> – Freshens breath & supports dental health</li>
+        <li><span class="text-success fw-bold">✔ Special Shampoo</span> – Options for sensitive skin, flea relief, whitening, etc.</li>
+      </ul>
+    </div>
 
+    <!-- Size Table -->
+    <h4 class="fw-bold text-danger mt-5 mb-3">Size & Breed Categories</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered text-center">
+        <thead style="background-color: #FFF5F0;" class="small">
+          <tr>
+            <th>Size</th>
+            <th>Weight Guide (kg)</th>
+            <th>Common Breeds</th>
+          </tr>
+        </thead>
+        <tbody class="small">
+          <tr style="background-color: #8A5E51; color: white;">
+            <td><strong>XS</strong></td>
+            <td>Up to 5</td>
+            <td>Chihuahua, Yorkshire Terrier, Toy Poodle</td>
+          </tr>
+          <tr style="background-color: white;">
+            <td><strong>S</strong></td>
+            <td>5 – 11</td>
+            <td>Maltese, Pomeranian, Shih Tzu</td>
+          </tr>
+          <tr style="background-color: #8A5E51; color: white;">
+            <td><strong>M</strong></td>
+            <td>12 – 19</td>
+            <td>Cavoodle, Beagle, Cocker Spaniel</td>
+          </tr>
+          <tr style="background-color: white;">
+            <td><strong>L</strong></td>
+            <td>20 – 27</td>
+            <td>Staffy, Border Collie, Groodle</td>
+          </tr>
+          <tr style="background-color: #8A5E51; color: white;">
+            <td><strong>XL</strong></td>
+            <td>Above 27</td>
+            <td>Golden Retriever, German Shepherd, Labrador</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<!-- Price Cards with Slider -->
-<section class="py-5 bg-light text-center">
-  <div class="container">
-    <h2 class="text-danger fw-bold mb-4">Professional Grooming for Dogs and Cats</h2>
-    <p class="text-muted mb-5">
-      We provide expert grooming services to keep your dogs and cats looking great and feeling their best. From baths and hair trims to nail care and coat maintenance, our professional team ensures every pet receives top-quality attention. Prioritizing comfort and gentle care, we make grooming a calm and enjoyable experience, leaving your furry friends clean, relaxed, and happy.
-    </p>
-
-    <div id="groomingCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-
-        <!-- Slide 1 -->
-        <div class="carousel-item active">
-          <div class="col-md-6 col-lg-4 mx-auto">
-            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #ff9966, #ff5e62);">
-              <div class="card-body">
-                <div class="mb-2">
-                  <i class="bi bi-scissors fs-2"></i>
-                </div>
-                <h5 class="fw-bold">Regular Bath</h5>
-                <p class="small">Best For All Kinds Of Pets</p>
-                <h3 class="fw-bold">RS.1800</h3>
-                <ul class="list-unstyled text-start small">
-                  <li>✔ Double Bath</li>
-                  <li>✔ Conditioning the hair</li>
-                  <li>✔ Dry with Towel & Dryer</li>
-                  <li>✔ Ear & Eye Cleaning</li>
-                  <li>✔ Brushing</li>
-                  <li>✔ Dog Perfume Spray</li>
-                </ul>
-                <a href="{% url 'regular_bathing' %}"  class="btn btn-outline-light">Book Appointment</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 2 -->
-        <div class="carousel-item">
-          <div class="col-md-6 col-lg-4 mx-auto">
-            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #fbcf9c, #e59c3e);">
-              <div class="card-body">
-                <div class="mb-2">
-                  <i class="bi bi-flower1 fs-2"></i>
-                </div>
-                <h5 class="fw-bold">Oatmeal Treatment</h5>
-                <p class="small">Best For All Kinds Of Pets</p>
-                <h3 class="fw-bold">RS.2500</h3>
-                <ul class="list-unstyled text-start small">
-                  <li>✔ Oatmeal treatment</li>
-                  <li>✔ Double Bath</li>
-                  <li>✔ Conditioning the hair</li>
-                  <li>✔ Dry with Towel & Dryer</li>
-                  <li>✔ Brushing</li>
-                  <li>✔ Hair Trimming</li>
-                </ul>
-                <a href="#" class="btn btn-outline-light">Book Appointment</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="carousel-item">
-          <div class="col-md-6 col-lg-4 mx-auto">
-            <div class="card shadow border-0 rounded-4 text-white" style="background: linear-gradient(to bottom, #ff9a9e, #fad0c4);">
-              <div class="card-body">
-                <div class="mb-2">
-                  <i class="bi bi-shield-plus fs-2"></i>
-                </div>
-                <h5 class="fw-bold">Fleas & Tick Treatment</h5>
-                <p class="small">Best For All Kinds Of Pets</p>
-                <h3 class="fw-bold">RS.2000</h3>
-                <ul class="list-unstyled text-start small">
-                  <li>✔ Double Bath using Anti-Tick Shampoo</li>
-                  <li>✔ Conditioning</li>
-                  <li>✔ Blow Dry with Towel & Dryer</li>
-                  <li>✔ Combing & Brushing</li>
-                  <li>✔ Hair Trimming and Tiding up</li>
-                  <li>✔ Nail Clipping</li>
-                </ul>
-                <a href="#" class="btn btn-outline-light">Book Appointment</a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-  <!-- Controls -->
-<button class="carousel-control-prev" type="button" data-bs-target="#groomingCarousel" data-bs-slide="prev">
-  <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
-</button>
-<button class="carousel-control-next" type="button" data-bs-target="#groomingCarousel" data-bs-slide="next">
-  <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
-</button>
-
+    <!-- Booking Call to Action -->
+    <div class="mt-5 py-4 px-3 rounded" style="background-color: #ffe7e0;">
+      <h5 class="fw-bold text-danger mb-2">Ready to Book Your Pet’s Pampering?</h5>
+      <p class="text-dark mb-3 small">Appointments by request to provide one-on-one care.</p>
+      <a href="#" class="btn btn-outline-danger px-4">Book Now →</a>
     </div>
   </div>
 </section>
+
+
 
 {% endblock content %}
