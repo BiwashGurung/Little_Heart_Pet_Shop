@@ -3,13 +3,13 @@
 {% load static %}
 
 <!-- Fullscreen Hero Image -->
-<section class="hero-section" style="height: 100vh; width: 100vw; background-image: url('{% static "images/groom-1.png" %}'); background-size: cover; background-position: center;"></section>
+<section class="hero-section" style="height: 100vh; width: 100vw; background-image: url('{% static "images/groom-1.png" %}'); background-size: cover; background-position: center; margin-bottom:-1px;"></section>
 
 <!-- Intro Paragraph Below Hero -->
 <section class="py-3" style="background-color: #FFF5F0;">
   <div class="container">
     <div class="text-center px-1 px-md-2">
-      <p class="text-dark" style="font-size: 20px; font-weight: 500; max-width: 1200px; margin-top: -2%;">
+      <p class="text-dark" style="font-size: 20px; font-weight: 400; max-width: 1200px;">
         <em>
           At Little Heart Pet Shop, every grooming session is one-on-one—calm, caring, and tailored to your pet’s needs.
           Whether it’s a quick tidy-up or a full makeover, I use gentle techniques and professional tools to keep your
@@ -95,39 +95,41 @@
     </div>
 
     <!-- Size Table -->
-     <h4 class="fw-bold text-danger mb-4 mt-5" style="font-size: 32px;">Size & Breed Categories</h4>
-    <div class="table-responsive">
-      <table class="table table-bordered text-center">
-        <thead style="background-color: #FFF5F0;" class="small">
-          <tr>
-            <th>Size</th>
-            <th>Weight Guide (kg)</th>
-          </tr>
-        </thead>
-        <tbody class="small">
-          <tr style="background-color: #8A5E51; color: white;">
-            <td><strong>XS</strong></td>
-            <td>Up to 5</td>
-          </tr>
-          <tr style="background-color: white;">
-            <td><strong>S</strong></td>
-            <td>5 – 11</td>
-          </tr>
-          <tr style="background-color: #8A5E51; color: white;">
-            <td><strong>M</strong></td>
-            <td>12 – 19</td>
-          </tr>
-          <tr style="background-color: white;">
-            <td><strong>L</strong></td>
-            <td>20 – 27</td>
-          </tr>
-          <tr style="background-color: #8A5E51; color: white !important;">
-            <td><strong>XL</strong></td>
-            <td>Above 27</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+     <!-- Size Table -->
+<h4 class="fw-bold text-danger mb-4 mt-5" style="font-size: 32px;">Size & Breed Categories</h4>
+<div class="d-flex justify-content-center">
+  <table class="table table-bordered text-center" style="max-width: 600px;">
+    <thead>
+      <tr>
+        <th style="background-color: #8A5E51; color: white;">Size</th>
+        <th style="background-color: #8A5E51; color: white;">Weight Guide (kg)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background-color: #F5EDE6;"><strong>XS</strong></td>
+        <td style="background-color: #F5EDE6;">Up to 5</td>
+      </tr>
+      <tr>
+        <td style="background-color: white;"><strong>S</strong></td>
+        <td style="background-color: white;">5 – 11</td>
+      </tr>
+      <tr>
+        <td style="background-color: #F5EDE6;"><strong>M</strong></td>
+        <td style="background-color: #F5EDE6;">12 – 19</td>
+      </tr>
+      <tr>
+        <td style="background-color: white;"><strong>L</strong></td>
+        <td style="background-color: white;">20 – 27</td>
+      </tr>
+      <tr>
+        <td style="background-color: #F5EDE6;"><strong>XL</strong></td>
+        <td style="background-color: #F5EDE6;">Above 27</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
     <!-- Booking Call to Action -->
     <div class="mt-5 py-4 px-3 rounded" style="background-color: #ffe7e0;">
