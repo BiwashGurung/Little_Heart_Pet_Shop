@@ -47,7 +47,7 @@ class ContactForm(forms.ModelForm):
         fields = ['name', 'email', 'phone', 'subject', 'message']
         widgets = {
             'message': forms.Textarea(attrs={'rows': 4, 'class': 'form-control border-danger'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control border-danger', 'placeholder': 'Phone number'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control border-danger'}),
         }
 
     def __init__(self, *args, **kwargs):

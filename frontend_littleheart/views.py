@@ -72,6 +72,9 @@ def logout(request):
     messages.success(request, "You have been logged out successfully.")
     return redirect('home')
 
+def terms(request):
+    return render(request, 'frontend_littleheart/terms_and_conditions.html')
+
 def about(request):
     return render(request, 'frontend_littleheart/about.html')
 
