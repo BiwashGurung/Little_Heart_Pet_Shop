@@ -66,7 +66,7 @@
 
   .img1 {
     grid-column: span 12;
-    height: 250px;
+    height: 450px;
   }
   .img2 {
     grid-column: span 6;
@@ -85,11 +85,13 @@
   }
   .img7 {
     grid-column: span 12;
-    height: 250px;
+    height: 550px;
   }
 
   .img1, .img7 {
-    object-fit: cover;
+    width: 200px;
+  height: 450px;
+  object-fit: scale-down;
   }
 
   .img1:hover {
@@ -196,13 +198,13 @@
 <div class="our-works">
   <h3>Our Works</h3>
   <div class="gallery-grid">
-    <img src="{% static 'images/blog-1.png' %}" alt="Work 1" class="img1">
-    <img src="{% static 'images/blog-2.png' %}" alt="Work 2" class="img2">
-    <img src="{% static 'images/blog-3.png' %}" alt="Work 3" class="img3">
-    <img src="{% static 'images/blog-4.png' %}" alt="Work 4" class="img4">
-    <img src="{% static 'images/blog-5.png' %}" alt="Work 5" class="img5">
-    <img src="{% static 'images/blog-6.png' %}" alt="Work 6" class="img6">
-    <img src="{% static 'images/blog-1.png' %}" alt="Work 7" class="img7">
+    <img src="{% static 'images/IMG_8897.jpeg' %}" alt="Work 1" class="img1">
+    <img src="{% static 'images/IMG_8806.jpeg' %}" alt="Work 2" class="img2">
+    <img src="{% static 'images/IMG_9031.jpeg' %}" alt="Work 3" class="img3">
+    <img src="{% static 'images/IMG_6551.jpeg' %}" alt="Work 4" class="img4">
+    <img src="{% static 'images/IMG_6579.jpeg' %}" alt="Work 5" class="img5">
+    <img src="{% static 'images/IMG_9107.jpeg' %}" alt="Work 6" class="img6">
+    <img src="{% static 'images/IMG_6685.jpeg' %}" alt="Work 7" class="img7">
   </div>
 </div>
 
